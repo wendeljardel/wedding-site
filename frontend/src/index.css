@@ -1,27 +1,27 @@
+/* Google Fonts - precisa vir antes de qualquer outro @import segundo a spec CSS */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap");
 @import "tailwindcss";
 
 /*
-  Variaveis de tema do casamento.
-  Inspirado no template Rey Fluid: tipografia serifada elegante,
-  paleta neutra e quente, muito espaco em branco.
+  Tema inspirado no template Squarespace "Rey Fluid":
+  - Tipografia serifada elegante (display + body sans clean)
+  - Paleta neutra quente, muito espaco em branco
+  - Layout fluido, imagens full-bleed, transicoes suaves
 */
 @theme {
-  --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-display: "Cormorant Garamond", "Playfair Display", Georgia, serif;
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 
-  --color-cream: #faf7f2;
-  --color-sand: #ebe3d6;
+  --color-cream: #f6f1ea;
+  --color-paper: #faf7f2;
+  --color-sand: #e7dccd;
   --color-clay: #b08968;
-  --color-ink: #2d2a26;
+  --color-ink: #1f1c19;
   --color-muted: #6b6660;
 }
 
-@font-face {
-  font-family: "Cormorant Garamond";
-  font-style: normal;
-  font-weight: 300 700;
-  font-display: swap;
-  src: url("https://fonts.gstatic.com/s/cormorantgaramond/v16/co3bmX5slCNuHLi8bLeY9MK7whWMhyjornFLsS6V7w.woff2") format("woff2");
+html {
+  scroll-behavior: smooth;
 }
 
 html, body, #root {
@@ -29,15 +29,51 @@ html, body, #root {
 }
 
 body {
-  background: var(--color-cream);
+  background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-serif);
-  font-weight: 400;
+  font-family: var(--font-display);
+  font-weight: 300;
   letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+/* "Eyebrow": pequeno texto em maiusculas usado pelo Rey como rotulo */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+/* Divisor ornamental em "—" usado entre secoes */
+.divider-rule {
+  display: inline-block;
+  height: 1px;
+  width: 60px;
+  background: var(--color-clay);
+  vertical-align: middle;
+  margin: 0 1rem;
+}
+
+/* Ampersand grande estilo Rey, em italico */
+.ampersand {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--color-clay);
+}
+
+/* Animacao de fade-up usada quando elementos entram no viewport */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

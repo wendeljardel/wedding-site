@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 import { api, type Gift } from '../lib/api'
 import { MOCK_GIFTS } from '../lib/mock-gifts'
 import ClaimGiftModal from '../components/ClaimGiftModal'
@@ -13,7 +14,6 @@ export default function Gifts() {
       .listGifts()
       .then(setGifts)
       .catch(() => {
-        // API ainda nao deployada: cai pro mock para o dev poder olhar a UI
         setLoadError(true)
         setGifts(MOCK_GIFTS)
       })
@@ -26,26 +26,47 @@ export default function Gifts() {
   }
 
   return (
-    <section className="max-w-5xl mx-auto px-6 py-20">
-      <header className="text-center max-w-2xl mx-auto mb-16">
-        <h1 className="text-5xl font-serif mb-6">Lista de presentes</h1>
-        <p className="text-[var(--color-muted)] leading-relaxed">
-          Cada presente abaixo te leva direto para a loja onde a gente escolheu.
-          Ao confirmar sua reserva o item fica indisponivel para os demais convidados.
-        </p>
+    <section className="pt-32 pb-32 md:pt-40 md:pb-40 px-8">
+      <header className="text-center max-w-2xl mx-auto mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="eyebrow">
+            <span className="divider-rule" />
+            A lista
+            <span className="divider-rule" />
+          </p>
+          <h1 className="mt-8 text-5xl md:text-6xl font-display">Lista de presentes</h1>
+          <p className="mt-8 text-[var(--color-muted)] leading-relaxed">
+            Cada presente te leva direto para a loja onde a gente escolheu.
+            Ao confirmar sua reserva o item fica indisponivel para os demais convidados.
+          </p>
+        </motion.div>
         {loadError && (
-          <p className="mt-6 text-xs text-amber-700 bg-amber-50 border border-amber-200 inline-block px-4 py-2">
-            (modo demo: a API ainda nao esta no ar, mostrando dados de exemplo)
+          <p className="mt-8 text-xs text-amber-700 bg-amber-50 border border-amber-200 inline-block px-4 py-2">
+            modo demo: a API ainda nao esta no ar, mostrando dados de exemplo
           </p>
         )}
       </header>
 
-      {!gifts && <p className="text-center text-[var(--color-muted)]">Carregando...</p>}
+      {!gifts && (
+        <p className="text-center text-[var(--color-muted)]">Carregando...</p>
+      )}
 
       {gifts && (
-        <ul className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {gifts.map((gift) => (
-            <GiftCard key={gift.giftId} gift={gift} onPick={() => setSelected(gift)} />
+        <ul className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+          {gifts.map((gift, i) => (
+            <motion.li
+              key={gift.giftId}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.7, delay: (i % 6) * 0.05 }}
+            >
+              <GiftCard gift={gift} onPick={() => setSelected(gift)} />
+            </motion.li>
           ))}
         </ul>
       )}
@@ -62,7 +83,7 @@ export default function Gifts() {
 function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
   const isClaimed = gift.status === 'claimed'
   return (
-    <li className="flex flex-col">
+    <div className="flex flex-col h-full">
       <div className="relative aspect-square overflow-hidden bg-[var(--color-sand)]">
         <img
           src={gift.imageUrl}
@@ -73,25 +94,27 @@ function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
           }`}
         />
         {isClaimed && (
-          <span className="absolute top-3 right-3 bg-[var(--color-ink)] text-[var(--color-cream)] text-[10px] uppercase tracking-widest px-2 py-1">
+          <span className="absolute top-3 right-3 bg-[var(--color-ink)] text-[var(--color-paper)] text-[10px] uppercase tracking-[0.25em] px-3 py-1.5">
             Reservado
           </span>
         )}
       </div>
-      <div className="pt-4 flex-1 flex flex-col">
-        <h3 className="font-serif text-xl">{gift.name}</h3>
-        <p className="text-sm text-[var(--color-muted)] mt-1 flex-1">{gift.description}</p>
-        <p className="mt-3 text-sm">
+      <div className="pt-6 flex-1 flex flex-col">
+        <h3 className="font-display text-2xl">{gift.name}</h3>
+        <p className="text-sm text-[var(--color-muted)] mt-2 flex-1">
+          {gift.description}
+        </p>
+        <p className="mt-4 text-sm">
           R$ {gift.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
         </p>
         <button
           disabled={isClaimed}
           onClick={onPick}
-          className="mt-4 w-full py-3 border border-[var(--color-ink)] uppercase tracking-widest text-xs hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[var(--color-ink)]"
+          className="mt-6 w-full py-4 border border-[var(--color-ink)] uppercase tracking-[0.25em] text-xs hover:bg-[var(--color-ink)] hover:text-[var(--color-paper)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[var(--color-ink)]"
         >
           {isClaimed ? 'Indisponivel' : 'Vou dar este presente'}
         </button>
       </div>
-    </li>
+    </div>
   )
 }

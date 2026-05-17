@@ -1,6 +1,6 @@
-import { Routes, Route, NavLink } from 'react-router-dom'
+import { Routes, Route, NavLink, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import Home from './pages/Home'
-import Ceremony from './pages/Ceremony'
 import Gifts from './pages/Gifts'
 import Admin from './pages/Admin'
 
@@ -11,7 +11,6 @@ export default function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/cerimonia" element={<Ceremony />} />
           <Route path="/presentes" element={<Gifts />} />
           <Route path="/admin" element={<Admin />} />
         </Routes>
@@ -22,33 +21,59 @@ export default function App() {
 }
 
 function Header() {
-  const links = [
-    { to: '/', label: 'Inicio' },
-    { to: '/cerimonia', label: 'Cerimonia' },
-    { to: '/presentes', label: 'Presentes' },
-  ]
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 50)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Hide on admin page para nao poluir
+  if (location.pathname === '/admin') return null
+
   return (
-    <header className="border-b border-[var(--color-sand)] bg-[var(--color-cream)]/90 backdrop-blur sticky top-0 z-10">
-      <nav className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
-        <NavLink to="/" className="font-serif text-2xl tracking-wide">
-          N &amp; W
+    <header
+      className={`fixed top-0 left-0 right-0 z-20 transition-all duration-500 ${
+        scrolled || !isHome
+          ? 'bg-[var(--color-paper)]/95 backdrop-blur border-b border-[var(--color-sand)] py-4'
+          : 'py-6'
+      }`}
+    >
+      <nav className="max-w-6xl mx-auto px-8 grid grid-cols-3 items-center">
+        <ul className="hidden md:flex gap-8 text-xs uppercase tracking-[0.25em] text-[var(--color-muted)]">
+          <li>
+            <a href={isHome ? '#about' : '/#about'} className="hover:text-[var(--color-ink)] transition-colors">
+              Sobre
+            </a>
+          </li>
+          <li>
+            <a href={isHome ? '#details' : '/#details'} className="hover:text-[var(--color-ink)] transition-colors">
+              Detalhes
+            </a>
+          </li>
+        </ul>
+
+        <NavLink to="/" className="font-display text-xl md:text-2xl text-center tracking-wide">
+          N <span className="ampersand">&amp;</span> W
         </NavLink>
-        <ul className="flex gap-8 text-sm uppercase tracking-widest">
-          {links.map((l) => (
-            <li key={l.to}>
-              <NavLink
-                to={l.to}
-                end={l.to === '/'}
-                className={({ isActive }) =>
-                  isActive
-                    ? 'text-[var(--color-ink)] border-b border-[var(--color-clay)] pb-1'
-                    : 'text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors'
-                }
-              >
-                {l.label}
-              </NavLink>
-            </li>
-          ))}
+
+        <ul className="hidden md:flex gap-8 text-xs uppercase tracking-[0.25em] text-[var(--color-muted)] justify-end">
+          <li>
+            <a href={isHome ? '#gallery' : '/#gallery'} className="hover:text-[var(--color-ink)] transition-colors">
+              Fotos
+            </a>
+          </li>
+          <li>
+            <NavLink to="/presentes" className="hover:text-[var(--color-ink)] transition-colors">
+              Presentes
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>
@@ -56,10 +81,18 @@ function Header() {
 }
 
 function Footer() {
+  const location = useLocation()
+  if (location.pathname === '/admin') return null
   return (
-    <footer className="border-t border-[var(--color-sand)] py-8 mt-16">
-      <div className="max-w-5xl mx-auto px-6 text-center text-xs uppercase tracking-widest text-[var(--color-muted)]">
-        com amor &mdash; nosso casamento
+    <footer className="border-t border-[var(--color-sand)] py-10 mt-0 bg-[var(--color-cream)]">
+      <div className="max-w-6xl mx-auto px-8 flex flex-col items-center gap-3">
+        <p className="font-display text-2xl">
+          N <span className="ampersand">&amp;</span> W
+        </p>
+        <p className="eyebrow">14 . 03 . 2027</p>
+        <p className="text-xs text-[var(--color-muted)] mt-2">
+          feito com carinho
+        </p>
       </div>
     </footer>
   )
