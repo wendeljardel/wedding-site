@@ -1,0 +1,132 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Wedding site backend (HTTP API + Lambdas + DynamoDB)
+
+Parameters:
+  AdminToken:
+    Type: String
+    NoEcho: true
+    Description: Token secreto usado no header X-Admin-Token para acessar endpoints admin
+    MinLength: 16
+  CorsOrigin:
+    Type: String
+    Default: '*'
+    Description: Origem permitida no CORS. Em producao, coloque https://seu-dominio.com.br
+
+Globals:
+  Function:
+    Runtime: nodejs20.x
+    Timeout: 5
+    MemorySize: 256
+    Architectures: [arm64]
+    Environment:
+      Variables:
+        GIFTS_TABLE: !Ref GiftsTable
+        CORS_ORIGIN: !Ref CorsOrigin
+
+Resources:
+  GiftsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: wedding-gifts
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: giftId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: giftId
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref CorsOrigin
+        AllowHeaders:
+          - Content-Type
+          - X-Admin-Token
+        AllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+
+  ListGiftsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend/dist/handlers
+      Handler: listGifts.handler
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref GiftsTable
+      Events:
+        ListGifts:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/gifts
+            Method: GET
+
+  ClaimGiftFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend/dist/handlers
+      Handler: claimGift.handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GiftsTable
+      Events:
+        Claim:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/gifts/{giftId}/claim
+            Method: POST
+
+  AdminListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend/dist/handlers
+      Handler: adminGifts.list
+      Environment:
+        Variables:
+          ADMIN_TOKEN: !Ref AdminToken
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref GiftsTable
+      Events:
+        AdminList:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/admin/gifts
+            Method: GET
+
+  AdminReleaseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend/dist/handlers
+      Handler: adminGifts.release
+      Environment:
+        Variables:
+          ADMIN_TOKEN: !Ref AdminToken
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GiftsTable
+      Events:
+        AdminRelease:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/admin/gifts/{giftId}/release
+            Method: POST
+
+Outputs:
+  ApiUrl:
+    Description: URL base da API
+    Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com
+  GiftsTableName:
+    Description: Nome da tabela DynamoDB
+    Value: !Ref GiftsTable
