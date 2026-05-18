@@ -1,45 +1,100 @@
 import type { Gift } from './api'
 
 /*
-  Dados de exemplo usados quando a API ainda nao esta no ar
-  (ou no preview/dev sem backend). Em producao, o useEffect na
-  pagina Gifts puxa da API e ignora isto.
+  Dados de exemplo usados quando a API ainda nao esta no ar.
+  Em producao, o useEffect na pagina Gifts puxa da API e ignora isto.
+  Mantenha em sincronia com infra/seed-gifts.json.
 */
 export const MOCK_GIFTS: Gift[] = [
   {
-    giftId: 'jogo-de-panelas',
-    name: 'Jogo de panelas',
-    description: 'Conjunto Tramontina antiaderente, 7 pecas',
-    imageUrl: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600',
-    price: 489.9,
-    storeUrl: 'https://www.amazon.com.br/dp/example1',
+    giftId: 'kit-tapete-passadeira-missoni',
+    name: 'Kit tapete + passadeira Missoni',
+    description:
+      'Conjunto de tapete 65 cm + passadeira 1,10 m com base antiderrapante, padrao Missoni cinza. Casa Bergan.',
+    imageUrl:
+      'https://casabergan.fbitsstatic.net/img/p/kit-tapete-para-cozinha-65cm-passadeira-1-10m-missoni-antiderrapante-2-pecas-154653/350042-1.jpg?w=620&h=620',
+    price: 129.9,
+    storeUrl:
+      'https://www.casabergan.com.br/produto/kit-tapete-para-cozinha-65cm-passadeira-1-10m-missoni-antiderrapante-2-pecas-154653?idvariant=Cinza',
     status: 'available',
   },
   {
-    giftId: 'cafeteira-italiana',
-    name: 'Cafeteira italiana',
-    description: 'Moka Bialetti 6 xicaras',
-    imageUrl: 'https://images.unsplash.com/photo-1610889556528-9a770e32642f?w=600',
-    price: 219.0,
-    storeUrl: 'https://www.amazon.com.br/dp/example2',
-    status: 'claimed',
-  },
-  {
-    giftId: 'jogo-de-toalhas',
-    name: 'Jogo de toalhas',
-    description: '4 toalhas de banho 100% algodao egipcio',
-    imageUrl: 'https://images.unsplash.com/photo-1631549916768-4119b4220292?w=600',
-    price: 329.0,
-    storeUrl: 'https://www.amazon.com.br/dp/example3',
+    giftId: 'passadeira-listras-preto',
+    name: 'Passadeira de algodao',
+    description:
+      'Passadeira artesanal listrada preto e off-white, 0,60 x 1,40 m, em algodao reciclado com base antiderrapante. Casa Cortilla.',
+    imageUrl:
+      'https://images.tcdn.com.br/img/img_prod/1383951/passadeira_listras_preto_1_20250829071649_603f725568e1.jpg',
+    price: 187.0,
+    storeUrl:
+      'https://www.casacortilla.com.br/tapetes/passadeiras/passadeira-listras-preto-antiderrapante?variant_id=235',
     status: 'available',
   },
   {
-    giftId: 'liquidificador',
-    name: 'Liquidificador',
-    description: 'Philco PH900 1200W',
-    imageUrl: 'https://images.unsplash.com/photo-1622480500638-5fb45e0f0f88?w=600',
-    price: 459.0,
-    storeUrl: 'https://www.amazon.com.br/dp/example4',
+    giftId: 'faca-tramontina-century',
+    name: 'Faca Tramontina Century',
+    description:
+      'Faca santoku 7 polegadas para fatiar e picar, lamina em aco inox e cabo de policarbonato. Amazon.',
+    imageUrl: 'https://m.media-amazon.com/images/I/41j19wxPs+L._AC_SL1500_.jpg',
+    price: 237.5,
+    storeUrl:
+      'https://www.amazon.com.br/Fatiar-Picar-Tramontina-Century-24020107/dp/B00KQVFAYO',
+    status: 'available',
+  },
+  {
+    giftId: 'potes-hermeticos-fresh-lock',
+    name: 'Kit de potes hermeticos Fresh Lock',
+    description:
+      'Conjunto de potes de vidro borossilicato com trava hermetica, linha Fresh Lock. Mercado Livre.',
+    imageUrl:
+      'https://http2.mlstatic.com/D_NQ_NP_788813-MLA95734885164_102025-OO.png',
+    price: 195.9,
+    storeUrl:
+      'https://www.mercadolivre.com.br/kit-potes-hermetico-ou-de-vidro-linha-fresh-lock/p/MLB55818366',
+    status: 'available',
+  },
+  {
+    giftId: 'panela-pressao-vancouver',
+    name: 'Panela de pressao Tramontina Vancouver',
+    description:
+      'Vancouver Effect 6 L em aluminio com revestimento Starflon Max antiaderente, 24 cm, preta. Amazon.',
+    imageUrl: 'https://m.media-amazon.com/images/I/71vhS1jZqnL._AC_SL1500_.jpg',
+    price: 243.99,
+    storeUrl:
+      'https://www.amazon.com.br/Tramontina-Vancouver-Alum%C3%ADnio-Revestimento-Antiaderente/dp/B0CD4SFMD7',
+    status: 'available',
+  },
+  {
+    giftId: 'tabua-teak-grande',
+    name: 'Tabua Teak Grande',
+    description:
+      'Tabua artesanal em madeira teca, 44 x 17 cm, com canaleta lateral para reter o caldo da carne. Projeto Recrie.',
+    imageUrl:
+      'https://www.projetorecrie.com.br/cdn/shop/files/Tabua_Teak_grande_sem_gravacao_grande.jpg',
+    price: 108.5,
+    storeUrl: 'https://www.projetorecrie.com.br/products/tabua-teak-grande',
+    status: 'available',
+  },
+  {
+    giftId: 'frigideira-wok-tognana',
+    name: 'Frigideira wok Tognana Stone & Wood',
+    description:
+      'Wok 32 cm com tampa, aluminio forjado antiaderente, cabo amadeirado, compativel com inducao. Camicado.',
+    imageUrl: 'https://img.camicado.com.br/item/100751266/zoom/1.jpg',
+    price: 399.99,
+    storeUrl:
+      'https://www.camicado.com.br/p/frigideira-wok-inducao-com-tampa-tognana-stone-wood-32-cm/-/A-100751258-br.lc?sku=100751266',
+    status: 'available',
+  },
+  {
+    giftId: 'garrafa-termica-austria',
+    name: 'Garrafa termica Home Style Austria',
+    description:
+      'Garrafa termica decorativa da linha Home Style, modelo Austria. Camicado.',
+    imageUrl: 'https://img.camicado.com.br/item/101594864/zoom/1.jpg',
+    price: 119.9,
+    storeUrl:
+      'https://www.camicado.com.br/p/garrafa-termica-home-style-austria/-/A-101387451-br.lc?sku=101594864',
     status: 'available',
   },
 ]

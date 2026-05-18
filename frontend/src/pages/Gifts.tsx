@@ -84,12 +84,18 @@ function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
   const isClaimed = gift.status === 'claimed'
   return (
     <div className="flex flex-col h-full">
-      <div className="relative aspect-square overflow-hidden bg-[var(--color-sand)]">
+      <a
+        href={gift.storeUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={`Ver "${gift.name}" na loja`}
+        className="group relative aspect-square overflow-hidden bg-white border border-[var(--color-sand)] block p-6"
+      >
         <img
           src={gift.imageUrl}
           alt={gift.name}
           loading="lazy"
-          className={`w-full h-full object-cover transition-transform duration-700 hover:scale-105 ${
+          className={`w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 ${
             isClaimed ? 'grayscale opacity-60' : ''
           }`}
         />
@@ -98,9 +104,24 @@ function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
             Reservado
           </span>
         )}
-      </div>
+        <span className="absolute bottom-3 right-3 bg-[var(--color-paper)]/95 text-[var(--color-ink)] text-[10px] uppercase tracking-[0.2em] px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+          Ver na loja
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M7 17L17 7M17 7H8M17 7V16" />
+          </svg>
+        </span>
+      </a>
       <div className="pt-6 flex-1 flex flex-col">
-        <h3 className="font-display text-2xl">{gift.name}</h3>
+        <h3 className="font-display text-2xl">
+          <a
+            href={gift.storeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[var(--color-clay)] transition-colors"
+          >
+            {gift.name}
+          </a>
+        </h3>
         <p className="text-sm text-[var(--color-muted)] mt-2 flex-1">
           {gift.description}
         </p>
