@@ -60,7 +60,7 @@ function Header() {
         </ul>
 
         <NavLink to="/" className="font-display text-xl md:text-2xl text-center tracking-wide">
-          N <span className="ampersand">&amp;</span> W
+          T <span className="ampersand">&amp;</span> W
         </NavLink>
 
         <ul className="hidden md:flex gap-8 text-xs uppercase tracking-[0.25em] text-[var(--color-muted)] justify-end">
@@ -87,9 +87,9 @@ function Footer() {
     <footer className="border-t border-[var(--color-sand)] py-10 mt-0 bg-[var(--color-cream)]">
       <div className="max-w-6xl mx-auto px-8 flex flex-col items-center gap-3">
         <p className="font-display text-2xl">
-          N <span className="ampersand">&amp;</span> W
+          T <span className="ampersand">&amp;</span> W
         </p>
-        <p className="eyebrow">14 . 03 . 2027</p>
+        <p className="eyebrow">06 . 09 . 2026</p>
         <p className="text-xs text-[var(--color-muted)] mt-2">
           feito com carinho
         </p>

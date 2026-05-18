@@ -12,8 +12,7 @@ import type { ReactNode } from 'react'
   em /public/photos depois de coloca-los la).
 */
 
-const HERO_IMAGE =
-  'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=80'
+const HERO_IMAGE = '/photos/hero.png'
 
 export default function Home() {
   return (
@@ -51,7 +50,7 @@ function Hero() {
           className="eyebrow text-white/90"
         >
           <span className="divider-rule bg-white/70" />
-          14 . 03 . 2027
+          06 . 09 . 2026
           <span className="divider-rule bg-white/70" />
         </motion.p>
 
@@ -62,11 +61,11 @@ function Hero() {
           className="mt-10 text-white text-7xl md:text-9xl font-display"
           style={{ textShadow: '0 2px 30px rgba(0,0,0,0.15)' }}
         >
-          Noiva
+          Thamires
           <span className="block ampersand text-white/95 my-2 text-6xl md:text-8xl">
             &amp;
           </span>
-          Noivo
+          Wendel
         </motion.h1>
 
         <motion.p
@@ -98,7 +97,7 @@ function About() {
     <Section id="about" eyebrow="Um encontro feito no ceu">
       <Fade>
         <h2 className="text-4xl md:text-6xl font-display max-w-4xl mx-auto leading-tight">
-          Noiva e Noivo convidam voce com alegria para
+          Thamires e Wendel convidam voce com alegria para
           celebrar a uniao de nossas vidas, na presenca da
           familia e dos amigos.
         </h2>
@@ -121,7 +120,7 @@ function Details() {
       <div className="max-w-6xl mx-auto px-8 grid gap-20 md:grid-cols-3">
         <DetailBlock
           eyebrow="Quando"
-          title="Sabado, 14 de Marco de 2027"
+          title="Domingo, 06 de Setembro de 2026"
           lines={['Cerimonia: 16h', 'Recepcao: 18h']}
         />
         <DetailBlock
@@ -134,7 +133,7 @@ function Details() {
           title="Hotel Jardim"
           lines={[
             'Reservamos um bloco de quartos.',
-            'Mencione "casamento N & W" ao reservar.',
+            'Mencione "casamento T & W" ao reservar.',
             'Rua das Flores, 200',
           ]}
         />
@@ -172,7 +171,7 @@ function Bride() {
   return (
     <Person
       eyebrow="A noiva"
-      name="Sobre a noiva"
+      name="Thamires"
       bio="Conte aqui um pouco da historia dela: onde cresceu, o que faz e
        o que mais ama no mundo. Algumas frases sao suficientes para dar
        um toque pessoal sem alongar demais."
@@ -186,7 +185,7 @@ function Groom() {
   return (
     <Person
       eyebrow="O noivo"
-      name="Sobre o noivo"
+      name="Wendel"
       bio="Conte aqui um pouco da historia dele: trajetoria, paixoes e
        o que torna esse encontro tao especial. Mantenha curto, com a
        voz de voces dois."
@@ -250,7 +249,7 @@ function Person({
 
 /* ---------- GALLERY ---------- */
 const GALLERY_PHOTOS = [
-  'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=80',
+  '/photos/gallery-thamires.png',
   'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
   'https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=1200&q=80',
   'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
