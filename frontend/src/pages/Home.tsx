@@ -12,7 +12,8 @@ import type { ReactNode } from 'react'
   em /public/photos depois de coloca-los la).
 */
 
-const HERO_IMAGE = '/photos/hero.png'
+const HERO_IMAGE =
+  'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=80'
 
 export default function Home() {
   return (
@@ -250,7 +251,7 @@ function Person({
 /* ---------- GALLERY ---------- */
 const GALLERY_PHOTOS = [
   '/photos/gallery-thamires.png',
-  'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
+  '/photos/gallery-couple.png',
   'https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=1200&q=80',
   'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
   'https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?auto=format&fit=crop&w=1200&q=80',
