@@ -22,6 +22,7 @@ navegador  -->  CloudFront  -->  S3 (SPA)
 - API serverless: API Gateway HTTP API + Lambda Node.js + DynamoDB on-demand.
 - Reserva de presente e atomica (DynamoDB `ConditionExpression`).
 - Nao ha login: o convidado digita o nome ao escolher o presente. Voce reconcilia depois pelo painel `/admin` (protegido por token).
+- Cotas de lua de mel: convidado paga via Pix copia-e-cola gerado no navegador e clica em "ja paguei". A reconciliacao com o extrato bancario e manual no painel admin.
 
 Custo estimado: US$ 1-3/mes durante os meses ativos, mais o dominio.
 
@@ -40,6 +41,22 @@ npm --prefix frontend install
 npm --prefix backend install
 npm --prefix scripts install
 ```
+
+## Configurando o Pix (cotas de lua de mel)
+
+O modal de cotas gera o Pix copia-e-cola no proprio navegador. Pra isso,
+copie `frontend/.env.example` pra `frontend/.env` e preencha:
+
+```
+VITE_PIX_KEY=sua-chave-aleatoria-do-banco
+VITE_PIX_MERCHANT_NAME=THAMIRES E WENDEL
+VITE_PIX_MERCHANT_CITY=SAO PAULO
+```
+
+Sem essas variaveis, o modal mostra um aviso amigavel pros convidados
+ate voce configurar. A chave nunca passa pelo backend - ela vive no
+bundle estatico do frontend. Recomendo usar **chave Pix aleatoria** do
+seu banco (mais privada que CPF/email).
 
 ## Rodando localmente
 
@@ -110,6 +127,24 @@ export CLOUDFRONT_DISTRIBUTION_ID=E123ABC456
    - Se falha (alguem foi mais rapido): devolve 409 e o frontend avisa.
 5. Frontend abre a loja em nova aba.
 6. Voce abre `/admin` periodicamente, ve quem reservou cada presente e, se reconhecer algum nome estranho, clica em "liberar".
+
+## Como funciona o fluxo de cota de lua de mel
+
+1. Convidado abre `/presentes` e ve a secao "Lua de mel" no topo.
+2. Clica numa cota (R$ 100 / R$ 120 / R$ 150 ou valor livre) -> modal pede o nome.
+3. Frontend gera localmente um `txid` curto (ex: `LDM20260907ABC12`) e o BR Code do Pix.
+4. Modal mostra o QR Code + texto copia-e-cola. Convidado paga no app do banco.
+5. Convidado clica em "Ja paguei". Frontend chama `POST /api/honeymoon/claim`
+   com `{cotaId, cotaLabel, amount, guestName, txid}` - Lambda grava em
+   `wedding-honeymoon-claims` com `confirmed = false`.
+6. Voce abre `/admin` -> aba "Lua de mel", confere cada `txid` no extrato
+   Pix do banco e clica em "Pendente" pra marcar como confirmado.
+   Avisos duplicados ou indevidos podem ser excluidos.
+
+> O `txid` aparece como referencia da transacao em quase todos os bancos -
+> e a chave que liga o aviso do site ao Pix recebido.
+
+Pra editar os valores ou textos das cotas, mude `frontend/src/lib/honeymoon.ts`.
 
 ## Comandos uteis
 

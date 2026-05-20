@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import type { ReactNode } from 'react'
+import galleryRock from '../assets/photos/gallery-rock.jpg'
 
 /*
   Home single-page inspirada no template Squarespace "Rey Fluid".
@@ -252,6 +253,7 @@ function Person({
 const GALLERY_PHOTOS = [
   '/photos/gallery-thamires.png',
   '/photos/gallery-couple.png',
+  galleryRock,
   'https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=1200&q=80',
   'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
   'https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?auto=format&fit=crop&w=1200&q=80',

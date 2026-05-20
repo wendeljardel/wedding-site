@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { api, type Gift } from '../lib/api'
 import { MOCK_GIFTS } from '../lib/mock-gifts'
+import { HONEYMOON_COTAS, type HoneymoonCota } from '../lib/honeymoon'
 import ClaimGiftModal from '../components/ClaimGiftModal'
+import HoneymoonModal from '../components/HoneymoonModal'
 
 export default function Gifts() {
   const [gifts, setGifts] = useState<Gift[] | null>(null)
   const [loadError, setLoadError] = useState(false)
   const [selected, setSelected] = useState<Gift | null>(null)
+  const [selectedCota, setSelectedCota] = useState<HoneymoonCota | null>(null)
 
   useEffect(() => {
     api
@@ -27,10 +30,13 @@ export default function Gifts() {
 
   return (
     <section className="pt-32 pb-32 md:pt-40 md:pb-40 px-8">
-      <header className="text-center max-w-2xl mx-auto mb-20">
+      <HoneymoonSection onPick={setSelectedCota} />
+
+      <header className="text-center max-w-2xl mx-auto mb-20 mt-32 md:mt-40">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.8 }}
         >
           <p className="eyebrow">
@@ -76,7 +82,74 @@ export default function Gifts() {
         onClose={() => setSelected(null)}
         onClaimed={handleClaimed}
       />
+      <HoneymoonModal
+        cota={selectedCota}
+        onClose={() => setSelectedCota(null)}
+      />
     </section>
+  )
+}
+
+function HoneymoonSection({
+  onPick,
+}: {
+  onPick: (c: HoneymoonCota) => void
+}) {
+  return (
+    <div className="max-w-6xl mx-auto">
+      <header className="text-center max-w-2xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="eyebrow">
+            <span className="divider-rule" />
+            Lua de mel
+            <span className="divider-rule" />
+          </p>
+          <h2 className="mt-8 text-4xl md:text-5xl font-display">
+            Nos ajude a tornar nossa viagem inesquecivel
+          </h2>
+          <p className="mt-8 text-[var(--color-muted)] leading-relaxed">
+            Quer contribuir com nossa lua de mel? Escolha uma das cotas
+            abaixo (ou um valor livre) e contribua via Pix. Cada pequeno
+            gesto vai virar uma memoria pra gente guardar.
+          </p>
+        </motion.div>
+      </header>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {HONEYMOON_COTAS.map((cota, i) => (
+          <motion.button
+            key={cota.id}
+            type="button"
+            onClick={() => onPick(cota)}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: i * 0.05 }}
+            className="group bg-[var(--color-cream)] border border-[var(--color-sand)] p-8 text-center hover:border-[var(--color-ink)] hover:-translate-y-1 transition-all duration-300"
+          >
+            <span className="text-4xl block">{cota.emoji}</span>
+            <h3 className="mt-5 font-display text-2xl leading-tight">
+              {cota.title}
+            </h3>
+            <p className="mt-3 text-sm text-[var(--color-muted)] min-h-[3rem]">
+              {cota.subtitle}
+            </p>
+            <p className="mt-5 text-lg">
+              {cota.amount === null
+                ? 'Voce escolhe'
+                : `R$ ${cota.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+            </p>
+            <span className="inline-block mt-6 text-[10px] uppercase tracking-[0.25em] border-b border-[var(--color-ink)] pb-0.5 group-hover:translate-y-0.5 transition-transform">
+              Contribuir
+            </span>
+          </motion.button>
+        ))}
+      </div>
+    </div>
   )
 }
 

@@ -21,6 +21,25 @@ export interface AdminGift extends Gift {
   claimedAt?: string
 }
 
+export interface HoneymoonClaim {
+  claimId: string
+  cotaId: string
+  cotaLabel: string
+  amount: number
+  guestName: string
+  txid: string
+  confirmed: boolean
+  createdAt: string
+}
+
+export interface HoneymoonClaimInput {
+  cotaId: string
+  cotaLabel: string
+  amount: number
+  guestName: string
+  txid: string
+}
+
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
     super(message)
@@ -52,6 +71,12 @@ export const api = {
       body: JSON.stringify({ guestName }),
     }),
 
+  claimHoneymoon: (input: HoneymoonClaimInput) =>
+    request<{ claimId: string }>('/api/honeymoon/claim', {
+      method: 'POST',
+      body: JSON.stringify(input),
+    }),
+
   admin: {
     listGifts: (token: string) =>
       request<AdminGift[]>('/api/admin/gifts', {
@@ -61,6 +86,27 @@ export const api = {
     releaseGift: (token: string, giftId: string) =>
       request<void>(`/api/admin/gifts/${encodeURIComponent(giftId)}/release`, {
         method: 'POST',
+        headers: { 'X-Admin-Token': token },
+      }),
+
+    listHoneymoon: (token: string) =>
+      request<HoneymoonClaim[]>('/api/admin/honeymoon', {
+        headers: { 'X-Admin-Token': token },
+      }),
+
+    confirmHoneymoon: (token: string, claimId: string, confirmed: boolean) =>
+      request<void>(
+        `/api/admin/honeymoon/${encodeURIComponent(claimId)}/confirm`,
+        {
+          method: 'POST',
+          headers: { 'X-Admin-Token': token },
+          body: JSON.stringify({ confirmed }),
+        },
+      ),
+
+    deleteHoneymoon: (token: string, claimId: string) =>
+      request<void>(`/api/admin/honeymoon/${encodeURIComponent(claimId)}`, {
+        method: 'DELETE',
         headers: { 'X-Admin-Token': token },
       }),
   },
