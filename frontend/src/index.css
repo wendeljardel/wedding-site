@@ -1,79 +1,563 @@
-/* Google Fonts - precisa vir antes de qualquer outro @import segundo a spec CSS */
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Great+Vibes&family=Inter:wght@300;400;500&display=swap");
 @import "tailwindcss";
 
 /*
-  Tema inspirado no template Squarespace "Rey Fluid":
-  - Tipografia serifada elegante (display + body sans clean)
-  - Paleta neutra quente, muito espaco em branco
-  - Layout fluido, imagens full-bleed, transicoes suaves
+  Identidade visual — aquarela + convite romântico
+  Paleta: sálvia, mostarda, laranja, terracota, magenta, orchid
 */
 @theme {
-  --font-display: "Cormorant Garamond", "Playfair Display", Georgia, serif;
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-script: "Great Vibes", cursive;
+  --font-sans: "Inter", system-ui, sans-serif;
 
-  --color-cream: #f6f1ea;
-  --color-paper: #faf7f2;
-  --color-sand: #e7dccd;
-  --color-clay: #b08968;
-  --color-ink: #1f1c19;
-  --color-muted: #6b6660;
+  --color-paper: #fdfbf7;
+  --color-cream: #f9f7f2;
+  --color-sand: #ebe4d8;
+
+  --color-monogram: #c6a05d;
+  --color-name: #7a6551;
+  --color-date: #a08b75;
+
+  --color-sage: #8da06b;
+  --color-sage-dark: #596a50;
+  --color-gold: #d4af37;
+  --color-monogram-gold: #b8955d;
+  --color-mustard: #d9a400;
+  --color-orange: #e38414;
+  --color-terracotta: #a33b12;
+  --color-magenta: #d10069;
+  --color-orchid: #b52482;
+
+  --color-ink: #2c2824;
+  --color-muted: #6f6760;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-html, body, #root {
-  height: 100%;
+html,
+body,
+#root {
+  min-height: 100%;
 }
 
 body {
-  background: var(--color-paper);
+  background-color: var(--color-paper);
+  background-image:
+    radial-gradient(ellipse 140% 60% at 50% -10%, rgba(212, 175, 55, 0.06), transparent 50%),
+    radial-gradient(ellipse 60% 50% at -5%  60%, rgba(141, 160, 107, 0.07), transparent 50%),
+    radial-gradient(ellipse 55% 50% at 105% 55%, rgba(141, 160, 107, 0.06), transparent 50%),
+    radial-gradient(ellipse 50% 35% at 100% 90%, rgba(209, 0, 105, 0.03), transparent 45%);
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Textura sutil de papel aquarela */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.3;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 300;
+  font-weight: 400;
+  line-height: 1.15;
   letter-spacing: -0.01em;
-  line-height: 1.05;
 }
 
-/* "Eyebrow": pequeno texto em maiusculas usado pelo Rey como rotulo */
+/* ─── Tipografia utilitária ─── */
 .eyebrow {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  color: var(--color-muted);
+  font-size: 0.67rem;
   font-weight: 400;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--color-sage-dark);
 }
 
-/* Divisor ornamental em "—" usado entre secoes */
+/* letter-spacing empurra o texto para a esquerda visualmente — compensa ao centralizar */
+.text-center .eyebrow,
+.hero-section__overlay .eyebrow {
+  display: block;
+  padding-left: 0.38em;
+}
+
+.font-display  { font-family: var(--font-display); }
+.font-script   { font-family: var(--font-script); font-weight: 400; line-height: 1.2; }
+.text-gold     { color: var(--color-gold); }
+.text-magenta  { color: var(--color-magenta); }
+.italic-display { font-family: var(--font-display); font-style: italic; }
+
+/* ─── Divisor decorativo ─── */
 .divider-rule {
   display: inline-block;
+  width: 48px;
   height: 1px;
-  width: 60px;
-  background: var(--color-clay);
+  margin: 0 0.85rem;
   vertical-align: middle;
-  margin: 0 1rem;
+  background: linear-gradient(90deg, transparent, var(--color-gold) 35%, var(--color-gold) 65%, transparent);
 }
 
-/* Ampersand grande estilo Rey, em italico */
-.ampersand {
+@media (max-width: 640px) {
+  .divider-rule {
+    width: 28px;
+    margin: 0 0.45rem;
+  }
+}
+
+/* ─── Hero ─── */
+.hero-section {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background-color: var(--color-paper);
+}
+
+.hero-section__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /*
+    Imagem retrato (680×1024) em viewport landscape:
+    - cover escala para preencher a largura → altura projetada ~2170px
+    - A igreja fica em ~55% da imagem original
+    - object-position Y=62% traz a igreja para o centro do viewport
+    - O céu acima ainda aparece (nomes em overlay)
+  */
+  object-position: center 62%;
+}
+
+/* tablet / mobile: viewport mais próximo de retrato,
+   a imagem já se adapta melhor — apenas centraliza levemente abaixo */
+@media (max-width: 1024px) {
+  .hero-section__art {
+    object-position: center 55%;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-section__art {
+    object-position: center 50%;
+  }
+}
+
+.hero-section__fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(253, 251, 247, 0.1) 0%, transparent 15%),
+    linear-gradient(to top, var(--color-paper) 0%, rgba(253, 251, 247, 0.96) 10%, rgba(253, 251, 247, 0.6) 22%, transparent 42%);
+}
+
+/* fade suavíssimo só na base — une a imagem ao conteúdo abaixo */
+.hero-section__fade-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 18%;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    var(--color-paper) 0%,
+    rgba(253, 251, 247, 0.7) 40%,
+    transparent 100%
+  );
+}
+
+/* Overlay com nomes — posicionado no céu da imagem */
+.hero-section__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding-top: clamp(4.5rem, 11vh, 9rem);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  pointer-events: none;
+  text-align: center;
+}
+
+.hero-section__overlay .hero-meta {
+  text-align: center;
+  width: 100%;
+  max-width: 20rem;
+  margin-inline: auto;
+  padding-left: 0.22em; /* compensa letter-spacing */
+}
+
+/* mobile: mais espaço abaixo do header fixo */
+@media (max-width: 640px) {
+  .hero-section__overlay {
+    padding-top: clamp(5rem, 14vh, 8rem);
+  }
+}
+
+/* linha decorativa acima dos nomes */
+.hero-name-rule {
+  width: clamp(80px, 15vw, 140px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold) 40%, var(--color-gold) 60%, transparent);
+  opacity: 0.55;
+  transform-origin: center;
+}
+
+.hero-name-rule-sm {
+  display: inline-block;
+  width: clamp(36px, 7vw, 64px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold) 50%, transparent);
+  opacity: 0.5;
+  vertical-align: middle;
+}
+
+.hero-section__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 90% 70% at 50% 45%, transparent 40%, rgba(44, 40, 36, 0.08) 100%);
+}
+
+/* Overlay de nomes sobre o hero */
+.hero-section__names {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding-bottom: clamp(5rem, 12vh, 9rem);
+  text-align: center;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .hero-section__art {
+    object-position: center 36%;
+  }
+}
+
+.hero-section__scroll {
+  position: absolute;
+  bottom: clamp(1.25rem, 3vh, 2rem);
+  left: 50%;
+  z-index: 4;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.hero-section__scroll-line {
+  width: 1px;
+  height: 2rem;
+  background: linear-gradient(to bottom, var(--color-gold), transparent);
+  animation: scroll-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes scroll-pulse {
+  0%, 100% { opacity: 0.35; transform: scaleY(0.7) translateY(-4px); }
+  50%       { opacity: 1;    transform: scaleY(1)   translateY(0); }
+}
+
+/* ─── Monograma ─── */
+.monogram-logo   { filter: drop-shadow(0 1px 2px rgba(253, 251, 247, 0.85)); }
+.monogram-wreath { filter: drop-shadow(0 2px 10px rgba(89, 106, 80, 0.14)); }
+
+/* ─── Seções ─── */
+.section-watercolor {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-alt {
+  position: relative;
+  background: linear-gradient(180deg,
+    rgba(249, 247, 242, 0.97) 0%,
+    var(--color-cream) 20%,
+    var(--color-cream) 80%,
+    rgba(249, 247, 242, 0.97) 100%
+  );
+}
+
+.section-alt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 50% 40% at 10% 20%, rgba(141, 160, 107, 0.07), transparent 60%),
+    radial-gradient(ellipse 45% 35% at 90% 70%, rgba(212, 175, 55, 0.06), transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 100%, rgba(209, 0, 105, 0.03), transparent 50%);
+}
+
+.section-watercolor > *:not(.watercolor-decor) {
+  position: relative;
+  z-index: 1;
+}
+
+.watercolor-decor {
+  z-index: 0;
+  opacity: 0.8;
+  mix-blend-mode: multiply;
+}
+
+/* ─── Cartão tipo convite ─── */
+.invite-card {
+  position: relative;
+  background: rgba(253, 251, 247, 0.9);
+  border: none;
+  box-shadow:
+    0 2px 8px rgba(44, 40, 36, 0.03),
+    0 8px 32px rgba(44, 40, 36, 0.04),
+    0 24px 64px rgba(89, 106, 80, 0.07);
+  backdrop-filter: blur(8px);
+}
+
+/* borda gradiente aquarela */
+.invite-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(212, 175, 55, 0.6) 0%,
+    rgba(141, 160, 107, 0.3) 35%,
+    rgba(209, 0, 105, 0.18) 65%,
+    rgba(212, 175, 55, 0.5) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* brilho interno suave no topo */
+.invite-card::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(212, 175, 55, 0.07), transparent 55%);
+  pointer-events: none;
+}
+
+/* ─── Botões ─── */
+.btn-primary {
+  display: inline-block;
+  padding: 0.85rem 2.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.67rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-paper);
+  background: linear-gradient(135deg, var(--color-sage-dark) 0%, #49593f 100%);
+  border: 1px solid rgba(89, 106, 80, 0.5);
+  box-shadow: 0 4px 18px rgba(89, 106, 80, 0.22);
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--color-terracotta) 0%, #8a3210 100%);
+  border-color: var(--color-terracotta);
+  box-shadow: 0 6px 26px rgba(163, 59, 18, 0.28);
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 0.85rem 2.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.67rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-sage-dark);
+  background: transparent;
+  border: 1px solid rgba(89, 106, 80, 0.32);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: rgba(141, 160, 107, 0.08);
+  border-color: var(--color-sage);
+}
+
+/* ─── Moldura de foto ─── */
+.photo-frame {
+  border-radius: 2px;
+  box-shadow: 0 4px 20px rgba(44, 40, 36, 0.08);
+}
+
+/* ─── Divisor aquarela (ondulado) ─── */
+.watercolor-divider {
+  opacity: 0.82;
+}
+
+/* ─── Countdown ─── */
+.countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.countdown-number {
   font-family: var(--font-display);
-  font-style: italic;
+  font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 300;
-  color: var(--color-clay);
+  line-height: 1;
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
 }
 
-/* Animacao de fade-up usada quando elementos entram no viewport */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.countdown-label {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  padding-left: 0.3em;
+}
+
+.countdown-dot {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--color-gold);
+  opacity: 0.5;
+  align-self: center;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+/* ─── Timeline do dia ─── */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, transparent, var(--color-gold) 10%, var(--color-gold) 90%, transparent);
+  opacity: 0.35;
+}
+
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-paper);
+  border: 1px solid var(--color-gold);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Header ─── */
+.site-header {
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease,
+    backdrop-filter 0.4s ease;
+}
+
+.site-header--hero {
+  background: linear-gradient(to bottom, rgba(253, 251, 247, 0.7) 0%, rgba(253, 251, 247, 0.25) 70%, transparent 100%);
+  border-bottom-color: transparent;
+  backdrop-filter: blur(3px);
+}
+
+.site-header--solid {
+  background: rgba(253, 251, 247, 0.93);
+  border-bottom-color: rgba(235, 228, 216, 0.55);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 24px rgba(44, 40, 36, 0.04);
+}
+
+/* ─── Inputs ─── */
+.input-watercolor {
+  width: 100%;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: rgba(255, 255, 255, 0.88);
+  padding: 0.75rem 1rem;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-ink);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-watercolor:focus {
+  border-color: rgba(212, 175, 55, 0.55);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.input-watercolor::placeholder {
+  color: var(--color-muted);
+  opacity: 0.7;
+}
+
+/* ─── Paleta decorativa ─── */
+.palette-bar {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 1.25rem;
+}
+
+.palette-bar span {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  box-shadow: 0 1px 4px rgba(44, 40, 36, 0.1);
+}
+
+.palette-bar span:nth-child(1) { background: var(--color-sage); }
+.palette-bar span:nth-child(2) { background: var(--color-mustard); }
+.palette-bar span:nth-child(3) { background: var(--color-orange); }
+.palette-bar span:nth-child(4) { background: var(--color-terracotta); }
+.palette-bar span:nth-child(5) { background: var(--color-magenta); }
+.palette-bar span:nth-child(6) { background: var(--color-orchid); }
+
+/* ─── Gold frame ─── */
+.gold-frame {
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.22), 0 8px 30px rgba(89, 106, 80, 0.09);
 }

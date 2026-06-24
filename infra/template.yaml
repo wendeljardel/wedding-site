@@ -22,6 +22,7 @@ Globals:
     Environment:
       Variables:
         GIFTS_TABLE: !Ref GiftsTable
+        HONEYMOON_TABLE: !Ref HoneymoonTable
         CORS_ORIGIN: !Ref CorsOrigin
 
 Resources:
@@ -39,6 +40,20 @@ Resources:
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
 
+  HoneymoonTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: wedding-honeymoon-claims
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: claimId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: claimId
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
   HttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
@@ -51,6 +66,7 @@ Resources:
         AllowMethods:
           - GET
           - POST
+          - DELETE
           - OPTIONS
 
   ListGiftsFunction:
@@ -123,10 +139,86 @@ Resources:
             Path: /api/admin/gifts/{giftId}/release
             Method: POST
 
+  ClaimHoneymoonFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend/dist/handlers
+      Handler: claimHoneymoon.handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref HoneymoonTable
+      Events:
+        Claim:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/honeymoon/claim
+            Method: POST
+
+  AdminHoneymoonListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend/dist/handlers
+      Handler: adminHoneymoon.list
+      Environment:
+        Variables:
+          ADMIN_TOKEN: !Ref AdminToken
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref HoneymoonTable
+      Events:
+        AdminList:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/admin/honeymoon
+            Method: GET
+
+  AdminHoneymoonConfirmFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend/dist/handlers
+      Handler: adminHoneymoon.confirm
+      Environment:
+        Variables:
+          ADMIN_TOKEN: !Ref AdminToken
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref HoneymoonTable
+      Events:
+        AdminConfirm:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/admin/honeymoon/{claimId}/confirm
+            Method: POST
+
+  AdminHoneymoonDeleteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend/dist/handlers
+      Handler: adminHoneymoon.remove
+      Environment:
+        Variables:
+          ADMIN_TOKEN: !Ref AdminToken
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref HoneymoonTable
+      Events:
+        AdminDelete:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/admin/honeymoon/{claimId}
+            Method: DELETE
+
 Outputs:
   ApiUrl:
     Description: URL base da API
     Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com
   GiftsTableName:
-    Description: Nome da tabela DynamoDB
+    Description: Nome da tabela DynamoDB de presentes
     Value: !Ref GiftsTable
+  HoneymoonTableName:
+    Description: Nome da tabela DynamoDB de contribuicoes da lua de mel
+    Value: !Ref HoneymoonTable

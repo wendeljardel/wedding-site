@@ -2,12 +2,16 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { api, type Gift } from '../lib/api'
 import { MOCK_GIFTS } from '../lib/mock-gifts'
+import { HONEYMOON_COTAS, type HoneymoonCota } from '../lib/honeymoon'
 import ClaimGiftModal from '../components/ClaimGiftModal'
+import HoneymoonModal from '../components/HoneymoonModal'
+import WatercolorDecor from '../components/WatercolorDecor'
 
 export default function Gifts() {
   const [gifts, setGifts] = useState<Gift[] | null>(null)
   const [loadError, setLoadError] = useState(false)
   const [selected, setSelected] = useState<Gift | null>(null)
+  const [selectedCota, setSelectedCota] = useState<HoneymoonCota | null>(null)
 
   useEffect(() => {
     api
@@ -26,11 +30,17 @@ export default function Gifts() {
   }
 
   return (
-    <section className="pt-32 pb-32 md:pt-40 md:pb-40 px-8">
-      <header className="text-center max-w-2xl mx-auto mb-20">
+    <section className="relative pt-28 pb-24 md:pt-36 md:pb-32 px-6 section-alt section-watercolor overflow-hidden">
+      <WatercolorDecor variant="gold" position="top-right" size="lg" />
+      <WatercolorDecor variant="sage" position="bottom-left" size="md" />
+
+      <HoneymoonSection onPick={setSelectedCota} />
+
+      <header className="text-center max-w-2xl mx-auto mb-20 mt-32 md:mt-40">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.8 }}
         >
           <p className="eyebrow">
@@ -38,7 +48,9 @@ export default function Gifts() {
             A lista
             <span className="divider-rule" />
           </p>
-          <h1 className="mt-8 text-5xl md:text-6xl font-display">Lista de presentes</h1>
+          <h1 className="mt-6 text-4xl md:text-5xl font-display">
+            Lista de <span className="font-script text-magenta text-5xl md:text-6xl">presentes</span>
+          </h1>
           <p className="mt-8 text-[var(--color-muted)] leading-relaxed">
             Cada presente te leva direto para a loja onde a gente escolheu.
             Ao confirmar sua reserva o item fica indisponivel para os demais convidados.
@@ -76,7 +88,77 @@ export default function Gifts() {
         onClose={() => setSelected(null)}
         onClaimed={handleClaimed}
       />
+      <HoneymoonModal
+        cota={selectedCota}
+        onClose={() => setSelectedCota(null)}
+      />
     </section>
+  )
+}
+
+function HoneymoonSection({
+  onPick,
+}: {
+  onPick: (c: HoneymoonCota) => void
+}) {
+  return (
+    <div className="max-w-6xl mx-auto">
+      <header className="text-center max-w-2xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="eyebrow">
+            <span className="divider-rule" />
+            Lua de mel
+            <span className="divider-rule" />
+          </p>
+          <h2 className="mt-8 text-4xl md:text-5xl font-display">
+            Nos ajude a tornar nossa viagem inesquecivel
+          </h2>
+          <p className="mt-8 text-[var(--color-muted)] leading-relaxed">
+            Quer contribuir com nossa lua de mel? Escolha uma das cotas
+            abaixo (ou um valor livre) e contribua via Pix. Cada pequeno
+            gesto vai virar uma memoria pra gente guardar.
+          </p>
+        </motion.div>
+      </header>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {HONEYMOON_COTAS.map((cota, i) => (
+          <motion.button
+            key={cota.id}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              onPick(cota)
+            }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, delay: i * 0.05 }}
+            className="group invite-card rounded-sm p-8 text-center hover:-translate-y-1 transition-all duration-300 hover:shadow-lg"
+          >
+            <span className="text-4xl block">{cota.emoji}</span>
+            <h3 className="mt-5 font-display text-2xl leading-tight">
+              {cota.title}
+            </h3>
+            <p className="mt-3 text-sm text-[var(--color-muted)] min-h-[3rem]">
+              {cota.subtitle}
+            </p>
+            <p className="mt-5 text-lg">
+              {cota.amount === null
+                ? 'Voce escolhe'
+                : `R$ ${cota.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+            </p>
+            <span className="inline-block mt-6 text-[10px] uppercase tracking-[0.25em] border-b border-[var(--color-gold)] text-[var(--color-sage-dark)] pb-0.5">
+              Contribuir
+            </span>
+          </motion.button>
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -89,7 +171,7 @@ function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
         target="_blank"
         rel="noopener noreferrer"
         title={`Ver "${gift.name}" na loja`}
-        className="group relative aspect-square overflow-hidden bg-white border border-[var(--color-sand)] block p-6"
+        className="group relative aspect-square overflow-hidden bg-white block p-6 photo-frame"
       >
         <img
           src={gift.imageUrl}
@@ -100,7 +182,7 @@ function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
           }`}
         />
         {isClaimed && (
-          <span className="absolute top-3 right-3 bg-[var(--color-ink)] text-[var(--color-paper)] text-[10px] uppercase tracking-[0.25em] px-3 py-1.5">
+          <span className="absolute top-3 right-3 bg-[var(--color-sage-dark)] text-[var(--color-paper)] text-[10px] uppercase tracking-[0.25em] px-3 py-1.5">
             Reservado
           </span>
         )}
@@ -117,7 +199,7 @@ function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
             href={gift.storeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[var(--color-clay)] transition-colors"
+            className="hover:text-[var(--color-magenta)] transition-colors"
           >
             {gift.name}
           </a>
@@ -129,9 +211,13 @@ function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
           R$ {gift.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
         </p>
         <button
+          type="button"
           disabled={isClaimed}
-          onClick={onPick}
-          className="mt-6 w-full py-4 border border-[var(--color-ink)] uppercase tracking-[0.25em] text-xs hover:bg-[var(--color-ink)] hover:text-[var(--color-paper)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[var(--color-ink)]"
+          onClick={(e) => {
+            e.preventDefault()
+            onPick()
+          }}
+          className="mt-6 w-full py-3.5 btn-primary text-center disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[var(--color-sage-dark)]"
         >
           {isClaimed ? 'Indisponivel' : 'Vou dar este presente'}
         </button>

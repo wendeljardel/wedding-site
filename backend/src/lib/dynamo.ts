@@ -10,3 +10,5 @@ export const ddb = DynamoDBDocumentClient.from(client, {
 })
 
 export const GIFTS_TABLE = process.env.GIFTS_TABLE ?? 'wedding-gifts'
+export const HONEYMOON_TABLE =
+  process.env.HONEYMOON_TABLE ?? 'wedding-honeymoon-claims'

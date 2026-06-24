@@ -1,26 +1,21 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import type { ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
+import WatercolorDecor, { WatercolorDivider, BotanicalSeparator } from '../components/WatercolorDecor'
 
-/*
-  Home single-page inspirada no template Squarespace "Rey Fluid".
-  Estrutura: Hero -> About -> When -> Where -> Accommodations -> Bride ->
-  Groom -> Gallery -> Registry -> Closing.
+const MONOGRAM_WREATH = '/assets/monogram-wreath.png'
+const HERO_CHURCH    = '/assets/hero-church.png'
 
-  Para personalizar: edite as constantes no topo dos componentes e substitua
-  as URLs do Unsplash pelas suas proprias fotos (basta apontar para arquivos
-  em /public/photos depois de coloca-los la).
-*/
-
-const HERO_IMAGE =
-  'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=80'
+const WEDDING_DATE = new Date('2026-09-06T16:00:00-03:00')
 
 export default function Home() {
   return (
     <>
       <Hero />
+      <Countdown />
       <About />
       <Details />
+      <Schedule />
       <Bride />
       <Groom />
       <Gallery />
@@ -30,136 +25,241 @@ export default function Home() {
   )
 }
 
-/* ---------- HERO ---------- */
+/* ═══════════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════════ */
 function Hero() {
   return (
-    <section className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0">
-        <img
-          src={HERO_IMAGE}
-          alt=""
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-[var(--color-paper)]/40" />
-      </div>
+    <section className="hero-section">
+      <img
+        src={HERO_CHURCH}
+        alt="Igreja Nossa Senhora do Carmo — Pacatuba"
+        className="hero-section__art"
+        width={1440}
+        height={960}
+        fetchPriority="high"
+        decoding="async"
+      />
 
-      <div className="relative text-center px-8">
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="eyebrow text-white/90"
-        >
-          <span className="divider-rule bg-white/70" />
-          06 . 09 . 2026
-          <span className="divider-rule bg-white/70" />
-        </motion.p>
+      {/* fade suave só na base */}
+      <div className="hero-section__fade-bottom" aria-hidden />
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+      {/* ── Overlay com nomes, posicionado no céu da imagem ── */}
+      <div className="hero-section__overlay">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.4, ease: 'easeOut' }}
-          className="mt-10 text-white text-7xl md:text-9xl font-display"
-          style={{ textShadow: '0 2px 30px rgba(0,0,0,0.15)' }}
+          transition={{ delay: 0.5, duration: 1.1, ease: 'easeOut' }}
+          className="flex flex-col items-center gap-2 px-4 w-full max-w-lg mx-auto text-center"
         >
-          Thamires
-          <span className="block ampersand text-white/95 my-2 text-6xl md:text-8xl">
-            &amp;
-          </span>
-          Wendel
-        </motion.h1>
+          {/* linha decorativa topo */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.8, duration: 0.8, ease: 'easeOut' }}
+            className="hero-name-rule"
+            aria-hidden
+          />
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1 }}
-          className="mt-12 eyebrow text-white/95"
-        >
-          Vamos nos casar
-        </motion.p>
+          {/* nomes em Great Vibes — mesma fonte do footer */}
+          <p
+            className="font-script text-[var(--color-name)] leading-none mt-4"
+            style={{ fontSize: 'clamp(2.8rem, 7vw, 5.5rem)' }}
+          >
+            Thamires &amp; Wendel
+          </p>
+
+          {/* divisor com ornamento */}
+          <div className="flex items-center gap-3 mt-2" aria-hidden>
+            <span className="hero-name-rule-sm" />
+            <svg viewBox="0 0 20 12" className="w-5 h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 6 Q7 2 4 1 Q7 2 10 6 Q13 2 16 1 Q13 2 10 6z" fill="var(--color-gold)" opacity="0.6"/>
+              <circle cx="10" cy="6" r="1.5" fill="var(--color-gold)" opacity="0.7"/>
+            </svg>
+            <span className="hero-name-rule-sm" />
+          </div>
+
+          <p className="eyebrow text-[var(--color-date)] tracking-[0.42em] mt-2"
+            style={{ fontSize: '0.9rem' }}
+          >
+            06 · 09 · 2026
+          </p>
+
+          <p className="hero-meta text-[var(--color-muted)] mt-1.5 tracking-[0.22em] uppercase"
+            style={{ fontSize: '0.82rem', fontWeight: 400 }}
+          >
+            Igreja Nossa Senhora do Carmo · Pacatuba, Ceará
+          </p>
+        </motion.div>
       </div>
 
-      <motion.div
+      <motion.a
+        href="#about"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.4 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/80 text-xs uppercase tracking-[0.3em] flex flex-col items-center gap-2"
+        transition={{ delay: 1.8 }}
+        className="hero-section__scroll eyebrow text-[var(--color-name)]/55 hover:text-[var(--color-ink)] transition-colors"
       >
         <span>role</span>
-        <span className="h-12 w-px bg-white/60" />
-      </motion.div>
+        <span className="hero-section__scroll-line" aria-hidden />
+      </motion.a>
     </section>
   )
 }
 
-/* ---------- ABOUT ---------- */
+/* ═══════════════════════════════════════════════════════════
+   COUNTDOWN
+═══════════════════════════════════════════════════════════ */
+function useCountdown(target: Date) {
+  const calc = () => {
+    const diff = target.getTime() - Date.now()
+    if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+    return {
+      days:    Math.floor(diff / 86_400_000),
+      hours:   Math.floor((diff % 86_400_000) / 3_600_000),
+      minutes: Math.floor((diff % 3_600_000)  / 60_000),
+      seconds: Math.floor((diff % 60_000)      / 1_000),
+    }
+  }
+  const [t, setT] = useState(calc)
+  useEffect(() => {
+    const id = setInterval(() => setT(calc()), 1000)
+    return () => clearInterval(id)
+  }, [])
+  return t
+}
+
+function Countdown() {
+  const { days, hours, minutes, seconds } = useCountdown(WEDDING_DATE)
+  const units = [
+    { value: days,    label: days === 1 ? 'dia' : 'dias' },
+    { value: hours,   label: hours === 1 ? 'hora' : 'horas' },
+    { value: minutes, label: minutes === 1 ? 'minuto' : 'minutos' },
+    { value: seconds, label: seconds === 1 ? 'segundo' : 'segundos' },
+  ]
+
+  return (
+    <section className="section-alt section-watercolor py-14 md:py-18 px-6">
+      <WatercolorDecor variant="gold" position="top-right" size="sm" className="opacity-40" />
+      <Fade>
+        <p className="eyebrow text-center mb-6">
+          <span className="divider-rule" />
+          faltam
+          <span className="divider-rule" />
+        </p>
+        <div className="flex items-end justify-center flex-wrap gap-x-2 gap-y-5 sm:gap-x-4 md:gap-x-8">
+          {units.map(({ value, label }, i) => (
+            <div key={label} className="contents">
+              <div className="countdown-unit">
+                <span className="countdown-number">{String(value).padStart(2, '0')}</span>
+                <span className="countdown-label">{label}</span>
+              </div>
+              {i < units.length - 1 && (
+                <span className="countdown-dot" aria-hidden>·</span>
+              )}
+            </div>
+          ))}
+        </div>
+      </Fade>
+    </section>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════════════════════════ */
 function About() {
   return (
-    <Section id="about" eyebrow="Um encontro feito no ceu">
+    <Section id="about" eyebrow="Um encontro feito no céu" variant="sage">
       <Fade>
-        <h2 className="text-4xl md:text-6xl font-display max-w-4xl mx-auto leading-tight">
-          Thamires e Wendel convidam voce com alegria para
-          celebrar a uniao de nossas vidas, na presenca da
-          familia e dos amigos.
-        </h2>
-      </Fade>
-      <Fade delay={0.15}>
-        <p className="mt-10 max-w-2xl mx-auto text-[var(--color-muted)] leading-relaxed">
-          A cerimonia sera intimista, seguida de recepcao no
-          mesmo espaco. O traje sugerido e esporte fino, e a
-          sua presenca e o que tornara esse dia inesquecivel.
-        </p>
+        <div className="invite-card max-w-3xl mx-auto px-8 py-12 md:px-16 md:py-16 text-center">
+          <h2 className="text-3xl md:text-5xl font-display leading-snug">
+            <span className="italic-display">Thamires</span>
+            {' '}e{' '}
+            <span className="italic-display">Wendel</span>
+            {' '}convidam você com alegria para celebrar a união de nossas vidas.
+          </h2>
+          <WatercolorDivider />
+          <p className="max-w-xl mx-auto text-[var(--color-muted)] text-base leading-relaxed">
+            A cerimônia será às 16h na Igreja Nossa Senhora do Carmo, em Pacatuba.
+            A recepção segue na Villa Cajá, no pé de serra, em clima de campo
+            serrano. Sua presença é o que tornará esse dia inesquecível.
+          </p>
+          <div className="palette-bar mt-8">
+            <span /><span /><span /><span /><span /><span />
+          </div>
+        </div>
       </Fade>
     </Section>
   )
 }
 
-/* ---------- DETAILS (When / Where / Accommodations) ---------- */
+/* ═══════════════════════════════════════════════════════════
+   DETAILS
+═══════════════════════════════════════════════════════════ */
 function Details() {
   return (
-    <section id="details" className="bg-[var(--color-cream)] py-32 md:py-40">
-      <div className="max-w-6xl mx-auto px-8 grid gap-20 md:grid-cols-3">
-        <DetailBlock
-          eyebrow="Quando"
-          title="Domingo, 06 de Setembro de 2026"
-          lines={['Cerimonia: 16h', 'Recepcao: 18h']}
-        />
-        <DetailBlock
-          eyebrow="Onde"
-          title="Capela de Sao Pedro"
-          lines={['Rua das Flores, 123', 'Sao Paulo, SP']}
-        />
-        <DetailBlock
-          eyebrow="Hospedagem"
-          title="Hotel Jardim"
-          lines={[
-            'Reservamos um bloco de quartos.',
-            'Mencione "casamento T & W" ao reservar.',
-            'Rua das Flores, 200',
-          ]}
-        />
+    <section id="details" className="section-alt section-watercolor py-24 md:py-32 px-6">
+      <WatercolorDecor variant="gold"    position="top-left"     size="lg" />
+      <WatercolorDecor variant="magenta" position="bottom-right" size="md" />
+
+      <div className="max-w-5xl mx-auto">
+        <Fade>
+          <header className="text-center mb-16">
+            <p className="eyebrow">
+              <span className="divider-rule" />Detalhes<span className="divider-rule" />
+            </p>
+            <h2 className="mt-5 text-3xl md:text-4xl font-display">
+              Onde e{' '}
+              <span className="font-script text-[var(--color-magenta)] text-4xl md:text-5xl">quando</span>
+            </h2>
+          </header>
+        </Fade>
+
+        <div className="grid gap-8 md:grid-cols-3">
+          <DetailBlock
+            eyebrow="Quando"
+            title="06 de Setembro de 2026"
+            lines={['Domingo', 'Cerimônia: 16h']}
+            icon={<IconClock />}
+          />
+          <DetailBlock
+            eyebrow="Cerimônia"
+            title="Igreja N. S. do Carmo"
+            lines={['Pacatuba, Ceará']}
+            icon={<IconChurch />}
+          />
+          <DetailBlock
+            eyebrow="Recepção"
+            title="Villa Cajá"
+            lines={['No pé de serra', 'Ambiente de campo serrano']}
+            icon={<IconCelebration />}
+          />
+        </div>
       </div>
     </section>
   )
 }
 
 function DetailBlock({
-  eyebrow,
-  title,
-  lines,
+  eyebrow, title, lines, icon,
 }: {
   eyebrow: string
   title: string
   lines: string[]
+  icon?: ReactNode
 }) {
   return (
     <Fade>
-      <div className="text-center">
+      <div className="invite-card rounded-sm px-6 py-10 text-center h-full flex flex-col items-center">
+        {icon && (
+          <div className="mb-4 text-[var(--color-gold)] opacity-80">{icon}</div>
+        )}
         <p className="eyebrow">{eyebrow}</p>
-        <h3 className="mt-6 text-3xl md:text-4xl font-display">{title}</h3>
-        <div className="mt-6 space-y-1 text-[var(--color-muted)]">
-          {lines.map((l) => (
-            <p key={l}>{l}</p>
+        <h3 className="mt-3 text-xl md:text-2xl font-display leading-snug">{title}</h3>
+        <div className="mt-3 space-y-0.5 text-[var(--color-muted)] text-sm">
+          {lines.map((line) => (
+            <p key={line}>{line}</p>
           ))}
         </div>
       </div>
@@ -167,17 +267,106 @@ function DetailBlock({
   )
 }
 
-/* ---------- BRIDE / GROOM ---------- */
+/* Ícones SVG inline simples */
+function IconClock() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 7v5l3 3"/>
+    </svg>
+  )
+}
+function IconChurch() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2v4M10 4h4"/>
+      <path d="M5 21V10l7-5 7 5v11H5z"/>
+      <rect x="9" y="14" width="6" height="7" rx="0.5"/>
+    </svg>
+  )
+}
+function IconCelebration() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 21l4-4m0 0L18 6l-4 4M7 17l11-11M9.5 7.5l7 7"/>
+      <circle cx="19" cy="5" r="1.5" fill="currentColor" stroke="none" opacity="0.6"/>
+    </svg>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCHEDULE (Programação do dia)
+═══════════════════════════════════════════════════════════ */
+const SCHEDULE_ITEMS = [
+  { time: '15h30', label: 'Recepção dos convidados', detail: 'Chegada à Igreja N. S. do Carmo' },
+  { time: '16h00', label: 'Cerimônia', detail: 'Pacatuba, Ceará' },
+  { time: '17h30', label: 'Coquetel & fotos', detail: 'Jardim da vila' },
+  { time: '19h00', label: 'Jantar & celebração', detail: 'Villa Cajá — campo serrano' },
+]
+
+function Schedule() {
+  return (
+    <section className="py-24 md:py-32 px-6 section-watercolor">
+      <WatercolorDecor variant="terracotta" position="bottom-left" size="md" className="opacity-40" />
+      <div className="max-w-2xl mx-auto">
+        <Fade>
+          <header className="text-center mb-14">
+            <p className="eyebrow">
+              <span className="divider-rule" />Programação<span className="divider-rule" />
+            </p>
+            <h2 className="mt-5 text-3xl md:text-4xl font-display">
+              O{' '}
+              <span className="font-script text-[var(--color-magenta)] text-4xl md:text-5xl">dia</span>
+              {' '}a dia
+            </h2>
+          </header>
+        </Fade>
+
+        <div className="relative">
+          {/* linha vertical */}
+          <div className="timeline-line hidden md:block" aria-hidden />
+
+          <div className="space-y-0">
+            {SCHEDULE_ITEMS.map((item, i) => (
+              <Fade key={item.time} delay={i * 0.08}>
+                <div className={`flex gap-6 md:gap-0 items-start md:items-center ${
+                  i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                }`}>
+                  {/* conteúdo */}
+                  <div className={`flex-1 pb-10 md:pb-12 text-center ${
+                    i % 2 === 0 ? 'md:pr-10 md:text-right' : 'md:pl-10 md:text-left'
+                  }`}>
+                    <p className="eyebrow text-[var(--color-gold)]">{item.time}</p>
+                    <h3 className="mt-1 text-xl md:text-2xl font-display">{item.label}</h3>
+                    <p className="text-sm text-[var(--color-muted)] mt-0.5">{item.detail}</p>
+                  </div>
+                  {/* ponto na linha */}
+                  <div className="timeline-dot mt-2 md:mt-0 hidden md:block" aria-hidden />
+                  {/* espaço do outro lado no desktop */}
+                  <div className="flex-1 hidden md:block" />
+                </div>
+              </Fade>
+            ))}
+          </div>
+        </div>
+      </div>
+      <BotanicalSeparator className="max-w-xl mx-auto" />
+    </section>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BRIDE & GROOM
+═══════════════════════════════════════════════════════════ */
 function Bride() {
   return (
     <Person
       eyebrow="A noiva"
       name="Thamires"
-      bio="Conte aqui um pouco da historia dela: onde cresceu, o que faz e
-       o que mais ama no mundo. Algumas frases sao suficientes para dar
-       um toque pessoal sem alongar demais."
-      image="https://images.unsplash.com/photo-1525258946800-98cfd641d0de?auto=format&fit=crop&w=1200&q=80"
+      bio="Conte aqui um pouco da história dela: onde cresceu, o que faz e o que mais ama no mundo."
+      image="/photos/gallery-thamires.png"
       align="left"
+      decorVariant="magenta"
     />
   )
 }
@@ -187,60 +376,66 @@ function Groom() {
     <Person
       eyebrow="O noivo"
       name="Wendel"
-      bio="Conte aqui um pouco da historia dele: trajetoria, paixoes e
-       o que torna esse encontro tao especial. Mantenha curto, com a
-       voz de voces dois."
-      image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80"
+      bio="Conte aqui um pouco da história dele: trajetória, paixões e o que torna esse encontro tão especial."
+      image="/photos/gallery-rock.jpg"
       align="right"
+      decorVariant="terracotta"
     />
   )
 }
 
 function Person({
-  eyebrow,
-  name,
-  bio,
-  image,
-  align,
+  eyebrow, name, bio, image, align, decorVariant,
 }: {
   eyebrow: string
   name: string
   bio: string
   image: string
   align: 'left' | 'right'
+  decorVariant: 'magenta' | 'terracotta' | 'sage'
 }) {
+  const textAlign = align === 'left' ? 'text-center md:text-left' : 'text-center md:text-right'
+
   const text = (
     <Fade>
-      <div className="px-8 md:px-16 py-16 md:py-24 max-w-xl">
+      <div className={`relative px-6 md:px-14 py-12 md:py-16 max-w-md mx-auto md:mx-0 ${textAlign}`}>
+        <WatercolorDecor
+          variant={decorVariant}
+          position={align === 'left' ? 'top-right' : 'top-left'}
+          size="sm"
+          className="opacity-50"
+        />
         <p className="eyebrow">{eyebrow}</p>
-        <h3 className="mt-6 text-4xl md:text-5xl font-display">{name}</h3>
-        <p className="mt-8 text-[var(--color-muted)] leading-relaxed">{bio}</p>
+        <h3 className="mt-3 text-5xl md:text-6xl font-display italic-display leading-none">
+          {name}
+        </h3>
+        <WatercolorDivider />
+        <p className="text-[var(--color-muted)] leading-relaxed">{bio}</p>
       </div>
     </Fade>
   )
+
   const img = (
-    <div className="relative aspect-[4/5] md:aspect-auto md:h-[600px] overflow-hidden">
+    <div className="aspect-[4/5] md:aspect-auto md:h-[540px] overflow-hidden photo-frame">
       <motion.img
-        initial={{ scale: 1.05 }}
+        initial={{ scale: 1.04 }}
         whileInView={{ scale: 1 }}
-        viewport={{ once: true, margin: '-100px' }}
-        transition={{ duration: 1.5, ease: 'easeOut' }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.4, ease: 'easeOut' }}
         src={image}
         alt=""
         className="w-full h-full object-cover"
       />
     </div>
   )
+
   return (
-    <section className="grid md:grid-cols-2 items-center">
+    <section className="section-watercolor grid md:grid-cols-2 items-center max-w-6xl mx-auto">
       {align === 'left' ? (
-        <>
-          {img}
-          <div className="flex justify-start">{text}</div>
-        </>
+        <>{img}{text}</>
       ) : (
         <>
-          <div className="flex justify-end order-2 md:order-1">{text}</div>
+          <div className="order-2 md:order-1 flex justify-center md:justify-end">{text}</div>
           <div className="order-1 md:order-2">{img}</div>
         </>
       )}
@@ -248,109 +443,140 @@ function Person({
   )
 }
 
-/* ---------- GALLERY ---------- */
+/* ═══════════════════════════════════════════════════════════
+   GALLERY
+═══════════════════════════════════════════════════════════ */
 const GALLERY_PHOTOS = [
   '/photos/gallery-thamires.png',
   '/photos/gallery-couple.png',
-  'https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80',
+  '/photos/gallery-rock.jpg',
 ]
 
 function Gallery() {
   return (
-    <section id="gallery" className="py-32 md:py-40 bg-[var(--color-paper)]">
-      <div className="max-w-6xl mx-auto px-8 text-center mb-16">
+    <section id="gallery" className="section-alt section-watercolor py-24 md:py-32 px-6">
+      <WatercolorDecor variant="mixed" position="center" size="lg" className="opacity-35" />
+
+      <div className="max-w-5xl mx-auto">
         <Fade>
-          <p className="eyebrow">
-            <span className="divider-rule" />
-            Memorias
-            <span className="divider-rule" />
-          </p>
-          <h2 className="mt-6 text-4xl md:text-5xl font-display">Nossa historia em fotos</h2>
+          <header className="text-center mb-12">
+            <p className="eyebrow">
+              <span className="divider-rule" />Memórias<span className="divider-rule" />
+            </p>
+            <h2 className="mt-5 text-3xl md:text-4xl font-display">
+              Nossa história em{' '}
+              <span className="font-script text-[var(--color-magenta)] text-4xl md:text-5xl">fotos</span>
+            </h2>
+          </header>
         </Fade>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 max-w-6xl mx-auto px-8">
-        {GALLERY_PHOTOS.map((src, i) => (
-          <Fade key={src} delay={i * 0.05}>
-            <div className="aspect-[4/5] overflow-hidden bg-[var(--color-sand)]">
-              <img
-                src={src}
-                alt=""
-                loading="lazy"
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-              />
-            </div>
-          </Fade>
-        ))}
+
+        {/* layout masonry: foto principal maior à esquerda */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+          {GALLERY_PHOTOS.map((src, i) => (
+            <Fade key={src} delay={i * 0.06}>
+              <div
+                className={`overflow-hidden photo-frame bg-[var(--color-sand)] ${
+                  i === 0
+                    ? 'col-span-2 md:col-span-1 md:row-span-2 aspect-[4/3] md:aspect-auto md:h-full'
+                    : 'aspect-[4/5]'
+                }`}
+              >
+                <img
+                  src={src}
+                  alt=""
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  className="w-full h-full object-cover hover:scale-[1.04] transition-transform duration-700 ease-out"
+                />
+              </div>
+            </Fade>
+          ))}
+        </div>
       </div>
     </section>
   )
 }
 
-/* ---------- REGISTRY ---------- */
+/* ═══════════════════════════════════════════════════════════
+   REGISTRY
+═══════════════════════════════════════════════════════════ */
 function Registry() {
   return (
-    <section className="py-32 md:py-40 bg-[var(--color-cream)]">
-      <div className="max-w-3xl mx-auto px-8 text-center">
-        <Fade>
-          <p className="eyebrow">A lista</p>
-          <h2 className="mt-6 text-4xl md:text-5xl font-display">Lista de presentes</h2>
-          <p className="mt-8 text-[var(--color-muted)] leading-relaxed">
-            Sua presenca ja e o nosso maior presente. Se ainda assim quiser
-            contribuir com algo, separamos uma lista pensada com carinho.
-            Cada item leva direto para a loja onde escolhemos, e fica indisponivel
-            assim que alguem reserva.
-          </p>
-        </Fade>
-        <Fade delay={0.15}>
-          <Link
-            to="/presentes"
-            className="inline-block mt-12 px-10 py-4 bg-[var(--color-ink)] text-[var(--color-paper)] uppercase tracking-[0.25em] text-xs hover:opacity-90 transition-opacity"
-          >
-            Ver a lista
-          </Link>
-        </Fade>
-      </div>
-    </section>
+    <Section eyebrow="Presentes" variant="gold">
+      <Fade>
+        <h2 className="text-3xl md:text-4xl font-display">
+          Lista de{' '}
+          <span className="font-script text-[var(--color-magenta)] text-4xl md:text-5xl">presentes</span>
+        </h2>
+        <p className="mt-6 max-w-lg mx-auto text-[var(--color-muted)] leading-relaxed">
+          Sua presença já é o nosso maior presente. Se ainda assim quiser
+          contribuir, separamos uma lista pensada com carinho.
+        </p>
+      </Fade>
+      <Fade delay={0.12}>
+        <Link to="/presentes" className="btn-primary mt-10 inline-block">
+          Ver a lista
+        </Link>
+      </Fade>
+    </Section>
   )
 }
 
-/* ---------- CLOSING ---------- */
+/* ═══════════════════════════════════════════════════════════
+   CLOSING
+═══════════════════════════════════════════════════════════ */
 function Closing() {
   return (
-    <section className="py-32 md:py-48 text-center px-8">
+    <section className="section-watercolor py-8 md:py-12 px-6 text-center">
+      <WatercolorDecor variant="sage"  position="top-left"     size="md" className="opacity-55" />
+      <WatercolorDecor variant="gold"  position="bottom-right" size="sm" className="opacity-50" />
+      <WatercolorDecor variant="mixed" position="center"       size="md" className="opacity-15" />
+
       <Fade>
-        <h2 className="text-3xl md:text-5xl font-display max-w-3xl mx-auto leading-tight">
-          Esperamos que voce esteja com a gente nesse
-          <span className="ampersand"> dia tao especial</span>.
+        <img
+          src={MONOGRAM_WREATH}
+          alt=""
+          className="mx-auto w-28 md:w-36 monogram-wreath"
+        />
+        <h2 className="mt-4 text-xl md:text-3xl font-display max-w-xl mx-auto leading-snug">
+          Esperamos você nesse{' '}
+          <span className="font-script text-[var(--color-magenta)] text-2xl md:text-4xl">dia especial</span>
         </h2>
+        <p className="mt-3 eyebrow text-[var(--color-date)] tracking-[0.42em]">
+          06 · 09 · 2026
+        </p>
+        <BotanicalSeparator className="max-w-xs mx-auto mt-0 mb-0" />
+        <p className="font-script text-[var(--color-name)] text-xl mt-0 opacity-75">
+          com amor,{' '}
+          <span className="italic">Thamires &amp; Wendel</span>
+        </p>
       </Fade>
     </section>
   )
 }
 
-/* ---------- Helpers ---------- */
+/* ═══════════════════════════════════════════════════════════
+   SHARED HELPERS
+═══════════════════════════════════════════════════════════ */
 function Section({
   id,
   eyebrow,
   children,
+  variant = 'mixed',
 }: {
   id?: string
   eyebrow?: string
   children: ReactNode
+  variant?: 'sage' | 'gold' | 'magenta' | 'terracotta' | 'mixed'
 }) {
   return (
-    <section id={id} className="py-32 md:py-40 px-8 text-center">
+    <section id={id} className="section-watercolor py-24 md:py-32 px-6 text-center">
+      <WatercolorDecor variant={variant} position="top-right" size="md" className="opacity-45" />
       {eyebrow && (
         <Fade>
           <p className="eyebrow">
-            <span className="divider-rule" />
-            {eyebrow}
-            <span className="divider-rule" />
+            <span className="divider-rule" />{eyebrow}<span className="divider-rule" />
           </p>
-          <div className="mt-10" />
+          <div className="mt-8" />
         </Fade>
       )}
       {children}
@@ -361,10 +587,10 @@ function Section({
 function Fade({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.9, delay, ease: 'easeOut' }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.75, delay, ease: 'easeOut' }}
     >
       {children}
     </motion.div>
