@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
 import { api } from '../lib/api'
 import type { HoneymoonCota } from '../lib/honeymoon'
 import { generateBRCode, generateTxid, pixIsConfigured } from '../lib/pix'
+import Modal from './Modal'
 
 interface Props {
   cota: HoneymoonCota | null
@@ -20,6 +20,7 @@ export default function HoneymoonModal({ cota, onClose }: Props) {
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [copied, setCopied] = useState(false)
+  const nameInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (cota) {
@@ -30,6 +31,9 @@ export default function HoneymoonModal({ cota, onClose }: Props) {
       setError(null)
       setBusy(false)
       setCopied(false)
+      requestAnimationFrame(() => {
+        nameInputRef.current?.focus({ preventScroll: true })
+      })
     }
   }, [cota])
 
@@ -103,64 +107,50 @@ export default function HoneymoonModal({ cota, onClose }: Props) {
     }
   }
 
-  if (!cota) return null
-
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4"
-        onClick={onClose}
-      >
-        <motion.div
-          initial={{ scale: 0.95, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.95, opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          onClick={(e) => e.stopPropagation()}
-          className="bg-[var(--color-cream)] max-w-md w-full p-8 shadow-xl max-h-[90vh] overflow-y-auto"
-        >
-          {step === 'form' && (
-            <FormStep
-              cota={cota}
-              name={name}
-              setName={setName}
-              customAmount={customAmount}
-              setCustomAmount={setCustomAmount}
-              effectiveAmount={effectiveAmount}
-              error={error}
-              onCancel={onClose}
-              onSubmit={handleGeneratePix}
-            />
-          )}
+    <Modal
+      open={!!cota}
+      onClose={onClose}
+      panelClassName="invite-card rounded-sm max-w-md w-full p-8 md:p-10 max-h-[90vh] overflow-y-auto"
+    >
+      {cota && step === 'form' && (
+        <FormStep
+          cota={cota}
+          name={name}
+          setName={setName}
+          customAmount={customAmount}
+          setCustomAmount={setCustomAmount}
+          effectiveAmount={effectiveAmount}
+          error={error}
+          nameInputRef={nameInputRef}
+          onCancel={onClose}
+          onSubmit={handleGeneratePix}
+        />
+      )}
 
-          {step === 'paying' && (
-            <PayingStep
-              cota={cota}
-              amount={effectiveAmount}
-              brCode={brCode}
-              copied={copied}
-              error={error}
-              busy={busy}
-              onCopy={copyBRCode}
-              onAlreadyPaid={handleAlreadyPaid}
-              onBack={() => setStep('form')}
-            />
-          )}
+      {cota && step === 'paying' && (
+        <PayingStep
+          cota={cota}
+          amount={effectiveAmount}
+          brCode={brCode}
+          copied={copied}
+          error={error}
+          busy={busy}
+          onCopy={copyBRCode}
+          onAlreadyPaid={handleAlreadyPaid}
+          onBack={() => setStep('form')}
+        />
+      )}
 
-          {step === 'success' && (
-            <SuccessStep
-              cota={cota}
-              amount={effectiveAmount}
-              name={name}
-              onClose={onClose}
-            />
-          )}
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
+      {cota && step === 'success' && (
+        <SuccessStep
+          cota={cota}
+          amount={effectiveAmount}
+          name={name}
+          onClose={onClose}
+        />
+      )}
+    </Modal>
   )
 }
 
@@ -172,6 +162,7 @@ function FormStep({
   setCustomAmount,
   effectiveAmount,
   error,
+  nameInputRef,
   onCancel,
   onSubmit,
 }: {
@@ -182,6 +173,7 @@ function FormStep({
   setCustomAmount: (v: string) => void
   effectiveAmount: number
   error: string | null
+  nameInputRef: React.RefObject<HTMLInputElement>
   onCancel: () => void
   onSubmit: (e: React.FormEvent) => void
 }) {
@@ -204,13 +196,13 @@ function FormStep({
             Seu nome
           </label>
           <input
-            autoFocus
+            ref={nameInputRef}
             required
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Como aparece no convite"
-            className="w-full border border-[var(--color-sand)] bg-white px-4 py-3 outline-none focus:border-[var(--color-clay)]"
+            className="input-watercolor"
           />
         </div>
 
@@ -228,7 +220,7 @@ function FormStep({
                 setCustomAmount(e.target.value.replace(/[^\d.,]/g, ''))
               }
               placeholder="Ex: 50,00"
-              className="w-full border border-[var(--color-sand)] bg-white px-4 py-3 outline-none focus:border-[var(--color-clay)]"
+              className="input-watercolor"
             />
           </div>
         )}
@@ -248,14 +240,14 @@ function FormStep({
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 px-4 py-3 border border-[var(--color-sand)] uppercase tracking-widest text-xs"
+            className="flex-1 px-4 py-3 btn-secondary text-center disabled:opacity-50"
           >
             Cancelar
           </button>
           <button
             type="submit"
             disabled={cota.amount === null && effectiveAmount <= 0}
-            className="flex-1 px-4 py-3 bg-[var(--color-ink)] text-[var(--color-cream)] uppercase tracking-widest text-xs disabled:opacity-50"
+            className="flex-1 px-4 py-3 btn-primary text-center disabled:opacity-50"
           >
             Gerar Pix
           </button>
@@ -345,7 +337,7 @@ function PayingStep({
           type="button"
           onClick={onBack}
           disabled={busy}
-          className="flex-1 px-4 py-3 border border-[var(--color-sand)] uppercase tracking-widest text-xs disabled:opacity-50"
+          className="flex-1 px-4 py-3 btn-secondary text-center disabled:opacity-50"
         >
           Voltar
         </button>
@@ -353,7 +345,7 @@ function PayingStep({
           type="button"
           onClick={onAlreadyPaid}
           disabled={busy || !brCode}
-          className="flex-1 px-4 py-3 bg-[var(--color-ink)] text-[var(--color-cream)] uppercase tracking-widest text-xs disabled:opacity-50"
+          className="flex-1 px-4 py-3 btn-primary text-center disabled:opacity-50"
         >
           {busy ? 'Registrando...' : 'Ja paguei'}
         </button>
@@ -388,8 +380,9 @@ function SuccessStep({
         carinho ja faz parte da nossa viagem.
       </p>
       <button
+        type="button"
         onClick={onClose}
-        className="mt-8 px-10 py-3 bg-[var(--color-ink)] text-[var(--color-cream)] uppercase tracking-widest text-xs"
+        className="mt-8 px-10 py-3 btn-primary"
       >
         Fechar
       </button>

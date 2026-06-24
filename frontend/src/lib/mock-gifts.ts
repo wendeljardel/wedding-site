@@ -132,4 +132,15 @@ export const MOCK_GIFTS: Gift[] = [
       'https://www.mercadolivre.com.br/tramontina-79634939-220v-laranjapreto/p/MLB9096807',
     status: 'available',
   },
+  {
+    giftId: 'tabuas-corte-tramontina-mixcolor',
+    name: 'Conjunto de tabuas Tramontina Mixcolor',
+    description:
+      'Conjunto de 5 tabuas de corte codificadas por cor com suporte, polipropileno com protecao antimicrobiana. Amazon.',
+    imageUrl: 'https://m.media-amazon.com/images/I/41T3EWYeW7L._AC_SL1024_.jpg',
+    price: 187.0,
+    storeUrl:
+      'https://www.amazon.com.br/gp/product/B076JMFSY3/ref=ox_sc_act_title_3?smid=A1ZZFT5FULY4LN&psc=1',
+    status: 'available',
+  },
 ]
