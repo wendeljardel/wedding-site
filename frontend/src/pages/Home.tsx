@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useEffect, useState, type ReactNode } from 'react'
 import WatercolorDecor, { WatercolorDivider, BotanicalSeparator } from '../components/WatercolorDecor'
+import RsvpModal from '../components/RsvpModal'
 
 const MONOGRAM_WREATH = '/assets/monogram-wreath.png'
 const HERO_CHURCH    = '/assets/hero-church.png'
@@ -19,6 +20,7 @@ export default function Home() {
       <Bride />
       <Groom />
       <Gallery />
+      <Rsvp />
       <Registry />
       <Closing />
     </>
@@ -490,6 +492,44 @@ function Gallery() {
           ))}
         </div>
       </div>
+    </section>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RSVP (Confirmação de presença)
+═══════════════════════════════════════════════════════════ */
+function Rsvp() {
+  const [open, setOpen] = useState(false)
+  return (
+    <section id="rsvp" className="section-alt section-watercolor py-24 md:py-32 px-6 text-center">
+      <WatercolorDecor variant="magenta" position="top-left" size="md" className="opacity-45" />
+      <WatercolorDecor variant="sage" position="bottom-right" size="sm" className="opacity-40" />
+
+      <Fade>
+        <p className="eyebrow">
+          <span className="divider-rule" />Presença<span className="divider-rule" />
+        </p>
+        <h2 className="mt-5 text-3xl md:text-4xl font-display">
+          Confirme sua{' '}
+          <span className="font-script text-[var(--color-magenta)] text-4xl md:text-5xl">presença</span>
+        </h2>
+        <p className="mt-6 max-w-lg mx-auto text-[var(--color-muted)] leading-relaxed">
+          Para prepararmos tudo com carinho, pedimos que confirme se poderá
+          celebrar esse dia conosco. Leva menos de um minuto.
+        </p>
+      </Fade>
+      <Fade delay={0.12}>
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="btn-primary mt-10 inline-block"
+        >
+          Confirmar presença
+        </button>
+      </Fade>
+
+      <RsvpModal open={open} onClose={() => setOpen(false)} />
     </section>
   )
 }

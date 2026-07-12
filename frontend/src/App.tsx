@@ -51,6 +51,7 @@ function Header() {
     { href: isHome ? '#about' : '/#about', label: 'Sobre' },
     { href: isHome ? '#details' : '/#details', label: 'Detalhes' },
     { href: isHome ? '#gallery' : '/#gallery', label: 'Fotos' },
+    { href: isHome ? '#rsvp' : '/#rsvp', label: 'Presença' },
   ]
 
   return (
@@ -92,11 +93,13 @@ function Header() {
           </NavLink>
 
           <ul className="hidden md:flex gap-6 text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">
-            <li>
-              <a href={links[2].href} className="hover:text-[var(--color-sage-dark)] transition-colors">
-                {links[2].label}
-              </a>
-            </li>
+            {links.slice(2).map((link) => (
+              <li key={link.href}>
+                <a href={link.href} className="hover:text-[var(--color-sage-dark)] transition-colors">
+                  {link.label}
+                </a>
+              </li>
+            ))}
             <li>
               <NavLink to="/presentes" className="hover:text-[var(--color-sage-dark)] transition-colors">
                 Presentes

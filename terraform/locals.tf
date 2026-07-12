@@ -23,11 +23,13 @@ locals {
   table_arns = {
     gifts     = aws_dynamodb_table.gifts.arn
     honeymoon = aws_dynamodb_table.honeymoon.arn
+    rsvp      = aws_dynamodb_table.rsvp.arn
   }
 
   table_names = {
     gifts     = aws_dynamodb_table.gifts.name
     honeymoon = aws_dynamodb_table.honeymoon.name
+    rsvp      = aws_dynamodb_table.rsvp.name
   }
 
   # Cada função Lambda + rota HTTP + acesso à tabela. Um único bundle
@@ -92,6 +94,27 @@ locals {
       access  = "crud"
       admin   = true
       route   = "DELETE /api/admin/honeymoon/{claimId}"
+    }
+    rsvp = {
+      handler = "rsvp.handler"
+      table   = "rsvp"
+      access  = "crud"
+      admin   = false
+      route   = "POST /api/rsvp"
+    }
+    admin_rsvp_list = {
+      handler = "adminRsvp.list"
+      table   = "rsvp"
+      access  = "read"
+      admin   = true
+      route   = "GET /api/admin/rsvp"
+    }
+    admin_rsvp_delete = {
+      handler = "adminRsvp.remove"
+      table   = "rsvp"
+      access  = "crud"
+      admin   = true
+      route   = "DELETE /api/admin/rsvp/{rsvpId}"
     }
   }
 }

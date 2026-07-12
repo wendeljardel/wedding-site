@@ -32,6 +32,7 @@ resource "aws_lambda_function" "fn" {
       {
         GIFTS_TABLE     = local.table_names["gifts"]
         HONEYMOON_TABLE = local.table_names["honeymoon"]
+        RSVP_TABLE      = local.table_names["rsvp"]
         CORS_ORIGIN     = var.cors_origin
       },
       each.value.admin ? { ADMIN_TOKEN = var.admin_token } : {},

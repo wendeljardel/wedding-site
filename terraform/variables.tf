@@ -51,6 +51,12 @@ variable "honeymoon_table_name" {
   default     = "wedding-honeymoon-claims"
 }
 
+variable "rsvp_table_name" {
+  type        = string
+  description = "Nome da tabela DynamoDB das confirmações de presença (RSVP)."
+  default     = "wedding-rsvp"
+}
+
 variable "point_in_time_recovery" {
   type        = bool
   description = "Habilita PITR (backup contínuo) nas tabelas DynamoDB. Custo desprezível no volume de um casamento."

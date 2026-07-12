@@ -27,3 +27,8 @@ output "honeymoon_table_name" {
   description = "Nome da tabela DynamoDB de contribuições de lua de mel."
   value       = aws_dynamodb_table.honeymoon.name
 }
+
+output "rsvp_table_name" {
+  description = "Nome da tabela DynamoDB de confirmações de presença (RSVP)."
+  value       = aws_dynamodb_table.rsvp.name
+}

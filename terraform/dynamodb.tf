@@ -27,3 +27,18 @@ resource "aws_dynamodb_table" "honeymoon" {
     enabled = var.point_in_time_recovery
   }
 }
+
+resource "aws_dynamodb_table" "rsvp" {
+  name         = var.rsvp_table_name
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "rsvpId"
+
+  attribute {
+    name = "rsvpId"
+    type = "S"
+  }
+
+  point_in_time_recovery {
+    enabled = var.point_in_time_recovery
+  }
+}

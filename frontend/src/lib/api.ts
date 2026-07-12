@@ -40,6 +40,24 @@ export interface HoneymoonClaimInput {
   txid: string
 }
 
+export interface Rsvp {
+  rsvpId: string
+  guestName: string
+  attending: boolean
+  companions: number
+  message: string
+  createdAt: string
+}
+
+export interface RsvpInput {
+  guestName: string
+  attending: boolean
+  companions: number
+  message: string
+  /** honeypot anti-spam: deve ficar vazio */
+  website?: string
+}
+
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
     super(message)
@@ -77,6 +95,12 @@ export const api = {
       body: JSON.stringify(input),
     }),
 
+  sendRsvp: (input: RsvpInput) =>
+    request<{ rsvpId: string }>('/api/rsvp', {
+      method: 'POST',
+      body: JSON.stringify(input),
+    }),
+
   admin: {
     listGifts: (token: string) =>
       request<AdminGift[]>('/api/admin/gifts', {
@@ -106,6 +130,17 @@ export const api = {
 
     deleteHoneymoon: (token: string, claimId: string) =>
       request<void>(`/api/admin/honeymoon/${encodeURIComponent(claimId)}`, {
+        method: 'DELETE',
+        headers: { 'X-Admin-Token': token },
+      }),
+
+    listRsvp: (token: string) =>
+      request<Rsvp[]>('/api/admin/rsvp', {
+        headers: { 'X-Admin-Token': token },
+      }),
+
+    deleteRsvp: (token: string, rsvpId: string) =>
+      request<void>(`/api/admin/rsvp/${encodeURIComponent(rsvpId)}`, {
         method: 'DELETE',
         headers: { 'X-Admin-Token': token },
       }),

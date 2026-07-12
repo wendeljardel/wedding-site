@@ -4,9 +4,10 @@ import {
   ApiError,
   type AdminGift,
   type HoneymoonClaim,
+  type Rsvp,
 } from '../lib/api'
 
-type Tab = 'gifts' | 'honeymoon'
+type Tab = 'gifts' | 'honeymoon' | 'rsvp'
 
 const TOKEN_KEY = 'wedding-admin-token'
 
@@ -23,6 +24,7 @@ export default function Admin() {
   const [authed, setAuthed] = useState(false)
   const [gifts, setGifts] = useState<AdminGift[] | null>(null)
   const [claims, setClaims] = useState<HoneymoonClaim[] | null>(null)
+  const [rsvps, setRsvps] = useState<Rsvp[] | null>(null)
   const [tab, setTab] = useState<Tab>('gifts')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -31,12 +33,14 @@ export default function Admin() {
     setBusy(true)
     setError(null)
     try {
-      const [giftsData, claimsData] = await Promise.all([
+      const [giftsData, claimsData, rsvpData] = await Promise.all([
         api.admin.listGifts(t),
         api.admin.listHoneymoon(t),
+        api.admin.listRsvp(t),
       ])
       setGifts(giftsData)
       setClaims(claimsData)
+      setRsvps(rsvpData)
       setAuthed(true)
       setToken(t)
       try {
@@ -58,6 +62,7 @@ export default function Admin() {
       setAuthed(false)
       setGifts(null)
       setClaims(null)
+      setRsvps(null)
     } finally {
       setBusy(false)
     }
@@ -79,6 +84,7 @@ export default function Admin() {
     setAuthed(false)
     setGifts(null)
     setClaims(null)
+    setRsvps(null)
     setError(null)
   }
 
@@ -110,6 +116,16 @@ export default function Admin() {
     if (!confirm('Excluir este aviso de pagamento?')) return
     try {
       await api.admin.deleteHoneymoon(token, claimId)
+      await reload()
+    } catch {
+      setError('Falha ao excluir.')
+    }
+  }
+
+  async function deleteRsvp(rsvpId: string) {
+    if (!confirm('Excluir esta confirmacao de presenca?')) return
+    try {
+      await api.admin.deleteRsvp(token, rsvpId)
       await reload()
     } catch {
       setError('Falha ao excluir.')
@@ -178,6 +194,11 @@ export default function Admin() {
           onClick={() => setTab('honeymoon')}
           label={`Lua de mel (${claims?.length ?? 0})`}
         />
+        <TabBtn
+          active={tab === 'rsvp'}
+          onClick={() => setTab('rsvp')}
+          label={`Presencas (${rsvps?.length ?? 0})`}
+        />
       </div>
 
       {error && (
@@ -195,6 +216,9 @@ export default function Admin() {
           onToggleConfirm={toggleConfirm}
           onDelete={deleteClaim}
         />
+      )}
+      {tab === 'rsvp' && rsvps && (
+        <RsvpTab rsvps={rsvps} onDelete={deleteRsvp} />
       )}
     </section>
   )
@@ -371,6 +395,79 @@ function HoneymoonTab({
             <tr>
               <td colSpan={7} className="py-6 text-[var(--color-muted)] text-center">
                 Nenhuma contribuicao ainda.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </>
+  )
+}
+
+function RsvpTab({
+  rsvps,
+  onDelete,
+}: {
+  rsvps: Rsvp[]
+  onDelete: (rsvpId: string) => void
+}) {
+  const going = rsvps.filter((r) => r.attending)
+  const notGoing = rsvps.filter((r) => !r.attending)
+  const totalPeople = going.reduce((sum, r) => sum + 1 + Number(r.companions ?? 0), 0)
+
+  return (
+    <>
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        <Stat label="Confirmados" value={String(going.length)} />
+        <Stat label="Total de pessoas" value={String(totalPeople)} />
+        <Stat label="Nao vao" value={String(notGoing.length)} />
+      </div>
+
+      <table className="w-full text-sm border-collapse">
+        <thead>
+          <tr className="text-left border-b border-[var(--color-sand)]">
+            <th className="py-2">Convidado</th>
+            <th>Vai?</th>
+            <th>Acomp.</th>
+            <th>Recado</th>
+            <th>Quando</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {rsvps.map((r) => (
+            <tr key={r.rsvpId} className="border-b border-[var(--color-sand)]">
+              <td className="py-3">{r.guestName}</td>
+              <td>
+                <span
+                  className={`text-xs uppercase tracking-widest px-3 py-1 ${
+                    r.attending
+                      ? 'bg-green-700 text-white'
+                      : 'border border-[var(--color-sand)] text-[var(--color-muted)]'
+                  }`}
+                >
+                  {r.attending ? 'Sim' : 'Nao'}
+                </span>
+              </td>
+              <td>{r.attending ? r.companions : '-'}</td>
+              <td className="max-w-xs text-[var(--color-muted)]">{r.message || '-'}</td>
+              <td className="text-[var(--color-muted)] text-xs">
+                {r.createdAt ? new Date(r.createdAt).toLocaleString('pt-BR') : '-'}
+              </td>
+              <td>
+                <button
+                  onClick={() => onDelete(r.rsvpId)}
+                  className="text-xs text-red-700 underline"
+                >
+                  excluir
+                </button>
+              </td>
+            </tr>
+          ))}
+          {rsvps.length === 0 && (
+            <tr>
+              <td colSpan={6} className="py-6 text-[var(--color-muted)] text-center">
+                Nenhuma confirmacao ainda.
               </td>
             </tr>
           )}
