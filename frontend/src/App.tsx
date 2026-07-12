@@ -3,8 +3,19 @@ import { useEffect, useState } from 'react'
 import Home from './pages/Home'
 import Gifts from './pages/Gifts'
 import Admin from './pages/Admin'
+import RsvpModal from './components/RsvpModal'
 
 const MONOGRAM = '/assets/monogram-wreath.png'
+
+const RSVP_DONE_KEY = 'wedding-rsvp-responded'
+
+function hasRespondedRsvp(): boolean {
+  try {
+    return localStorage.getItem(RSVP_DONE_KEY) === '1'
+  } catch {
+    return false
+  }
+}
 
 export default function App() {
   return (
@@ -18,7 +29,46 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+      <RsvpGate />
     </div>
+  )
+}
+
+/*
+  Portão de RSVP: na primeira visita a uma página pública, abre um modal
+  bloqueante. O convidado só acessa o conteúdo depois de responder se vai
+  ou não. A resposta fica no localStorage para não reaparecer toda vez.
+  O painel /admin nunca é bloqueado.
+*/
+function RsvpGate() {
+  const { pathname } = useLocation()
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (pathname === '/admin') {
+      setOpen(false)
+      return
+    }
+    if (!hasRespondedRsvp()) setOpen(true)
+  }, [pathname])
+
+  if (pathname === '/admin') return null
+
+  function markResponded() {
+    try {
+      localStorage.setItem(RSVP_DONE_KEY, '1')
+    } catch {
+      /* ignore quota / private mode */
+    }
+  }
+
+  return (
+    <RsvpModal
+      open={open}
+      blocking
+      onSuccess={markResponded}
+      onClose={() => setOpen(false)}
+    />
   )
 }
 

@@ -5,13 +5,17 @@ import Modal from './Modal'
 interface Props {
   open: boolean
   onClose: () => void
+  /** Modo "portão": exige resposta antes de liberar o site. */
+  blocking?: boolean
+  /** Chamado apos o envio bem-sucedido (ex: persistir que ja respondeu). */
+  onSuccess?: () => void
 }
 
 type Step = 'form' | 'success'
 
 const MAX_COMPANIONS = 10
 
-export default function RsvpModal({ open, onClose }: Props) {
+export default function RsvpModal({ open, onClose, blocking = false, onSuccess }: Props) {
   const [step, setStep] = useState<Step>('form')
   const [name, setName] = useState('')
   const [attending, setAttending] = useState(true)
@@ -52,6 +56,7 @@ export default function RsvpModal({ open, onClose }: Props) {
         website: honeypot,
       })
       setStep('success')
+      onSuccess?.()
     } catch (err) {
       console.error(err)
       setError(
@@ -63,10 +68,17 @@ export default function RsvpModal({ open, onClose }: Props) {
     }
   }
 
+  // No modo bloqueante, so permite fechar depois de responder.
+  function handleClose() {
+    if (blocking && step !== 'success') return
+    onClose()
+  }
+
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
+      backdropClassName={blocking ? 'bg-[var(--color-paper)]/98 backdrop-blur-sm' : 'bg-black/40'}
       panelClassName="invite-card rounded-sm max-w-md w-full p-8 md:p-10 max-h-[90vh] overflow-y-auto"
     >
       {step === 'form' && (
@@ -77,7 +89,9 @@ export default function RsvpModal({ open, onClose }: Props) {
             </p>
             <h2 className="text-2xl font-display mt-3">Confirme sua presença</h2>
             <p className="text-sm text-[var(--color-muted)] mt-2">
-              Nos ajude a organizar tudo com carinho respondendo abaixo.
+              {blocking
+                ? 'Antes de ver o convite, conte para os noivos se você poderá comparecer.'
+                : 'Nos ajude a organizar tudo com carinho respondendo abaixo.'}
             </p>
           </div>
 
@@ -145,7 +159,7 @@ export default function RsvpModal({ open, onClose }: Props) {
             {attending && (
               <div>
                 <label className="block text-xs uppercase tracking-widest mb-2">
-                  Acompanhantes (além de você)
+                  Acompanhantes convidados
                 </label>
                 <div className="flex items-center gap-4">
                   <button
@@ -194,14 +208,16 @@ export default function RsvpModal({ open, onClose }: Props) {
             )}
 
             <div className="flex gap-3 pt-2">
-              <button
-                type="button"
-                onClick={onClose}
-                disabled={busy}
-                className="flex-1 px-4 py-3 btn-secondary text-center disabled:opacity-50"
-              >
-                Cancelar
-              </button>
+              {!blocking && (
+                <button
+                  type="button"
+                  onClick={onClose}
+                  disabled={busy}
+                  className="flex-1 px-4 py-3 btn-secondary text-center disabled:opacity-50"
+                >
+                  Cancelar
+                </button>
+              )}
               <button
                 type="submit"
                 disabled={busy || !name.trim()}

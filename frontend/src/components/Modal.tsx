@@ -7,6 +7,7 @@ interface ModalProps {
   onClose: () => void
   children: ReactNode
   panelClassName?: string
+  backdropClassName?: string
 }
 
 export default function Modal({
@@ -14,6 +15,7 @@ export default function Modal({
   onClose,
   children,
   panelClassName = 'invite-card rounded-sm max-w-md w-full p-8 md:p-10',
+  backdropClassName = 'bg-black/40',
 }: ModalProps) {
   useEffect(() => {
     if (!open) return
@@ -42,7 +44,7 @@ export default function Modal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4 overscroll-none"
+          className={`fixed inset-0 z-[100] flex items-center justify-center p-4 overscroll-none ${backdropClassName}`}
           onClick={onClose}
         >
           <motion.div
