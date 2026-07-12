@@ -1,0 +1,11 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+tfplan
+*.tfvars
+!terraform.tfvars.example
+
+# Artefatos de build empacotados pelo archive_file
+build/

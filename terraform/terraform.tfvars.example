@@ -1,0 +1,15 @@
+# Copie para terraform.tfvars e ajuste.
+
+aws_region   = "us-east-1"
+project_name = "wedding-site"
+
+# Obrigatório: token secreto para os endpoints /api/admin/*.
+# Gere um com: openssl rand -hex 32
+admin_token = "troque-por-um-token-aleatorio-de-32-bytes"
+
+# CloudFront: PriceClass_100 (mais barato). Para menor latência no Brasil,
+# use PriceClass_All (edge em São Paulo) — o custo extra é desprezível.
+price_class = "PriceClass_100"
+
+# Dias de retenção dos logs das Lambdas.
+log_retention_days = 14

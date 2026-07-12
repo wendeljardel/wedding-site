@@ -52,8 +52,9 @@ export default function Gifts() {
             Lista de <span className="font-script text-magenta text-5xl md:text-6xl">presentes</span>
           </h1>
           <p className="mt-8 text-[var(--color-muted)] leading-relaxed">
-            Cada presente te leva direto para a loja onde a gente escolheu.
-            Ao confirmar sua reserva o item fica indisponivel para os demais convidados.
+            Cada presente te leva direto para a loja onde a gente escolheu —
+            o valor atual aparece la. Ao confirmar sua reserva o item fica
+            indisponivel para os demais convidados.
           </p>
         </motion.div>
         {loadError && (
@@ -206,9 +207,6 @@ function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
         </h3>
         <p className="text-sm text-[var(--color-muted)] mt-2 flex-1">
           {gift.description}
-        </p>
-        <p className="mt-4 text-sm">
-          R$ {gift.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
         </p>
         <button
           type="button"

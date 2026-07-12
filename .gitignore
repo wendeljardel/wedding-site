@@ -4,7 +4,7 @@ node_modules/
 # Builds
 dist/
 build/
-.aws-sam/
+*.tsbuildinfo
 
 # Env
 .env
@@ -22,6 +22,10 @@ yarn-debug.log*
 .idea/
 *.swp
 
-# SAM / AWS
-samconfig.toml.local
-packaged.yaml
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!terraform.tfvars.example
+tfplan

@@ -29,7 +29,7 @@
   --color-orchid: #b52482;
 
   --color-ink: #2c2824;
-  --color-muted: #6f6760;
+  --color-muted: #5c544c;
 }
 
 html {
@@ -51,11 +51,17 @@ body {
     radial-gradient(ellipse 50% 35% at 100% 90%, rgba(209, 0, 105, 0.03), transparent 45%);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 1rem;
-  line-height: 1.65;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   overflow-x: hidden;
+}
+
+/* corpo de texto com medida de leitura confortável */
+p {
+  text-wrap: pretty;
 }
 
 /* Textura sutil de papel aquarela */
@@ -65,7 +71,7 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.3;
+  opacity: 0.16;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
   background-size: 200px 200px;
 }
@@ -101,6 +107,18 @@ h1, h2, h3, h4 {
 
 .font-display  { font-family: var(--font-display); }
 .font-script   { font-family: var(--font-script); font-weight: 400; line-height: 1.2; }
+
+/* conector "&" / "e" entre os nomes dos noivos — menor e discreto */
+.name-connector {
+  font-family: var(--font-script);
+  font-style: normal;
+  font-size: 0.46em;
+  font-weight: 400;
+  color: var(--color-gold);
+  vertical-align: 0.14em;
+  padding: 0 0.28em;
+  opacity: 0.9;
+}
 .text-gold     { color: var(--color-gold); }
 .text-magenta  { color: var(--color-magenta); }
 .italic-display { font-family: var(--font-display); font-style: italic; }
@@ -200,12 +218,65 @@ h1, h2, h3, h4 {
   text-align: center;
 }
 
+/* halo claro para destacar o texto sobre a aquarela/céu da imagem */
+.hero-overlay-content p {
+  text-shadow:
+    0 1px 2px rgba(253, 251, 247, 0.9),
+    0 2px 14px rgba(253, 251, 247, 0.6);
+}
+
+.hero-section__overlay .hero-date {
+  font-size: 0.9rem;
+}
+
 .hero-section__overlay .hero-meta {
   text-align: center;
   width: 100%;
-  max-width: 20rem;
+  max-width: 22rem;
   margin-inline: auto;
   padding-left: 0.22em; /* compensa letter-spacing */
+  font-size: 0.82rem;
+  font-weight: 400;
+}
+
+/* telas maiores: data e local precisam de mais corpo e contraste
+   (no mobile o layout já fica legível e não é alterado) */
+@media (min-width: 1024px) {
+  .hero-section__overlay .hero-date {
+    font-size: 1.05rem;
+    letter-spacing: 0.5em;
+    color: var(--color-name);
+  }
+
+  .hero-section__overlay .hero-meta {
+    font-size: 0.94rem;
+    max-width: 30rem;
+    letter-spacing: 0.26em;
+    color: var(--color-name);
+  }
+
+  /* base clara e suave atrás de data/local — em telas grandes esse bloco
+     cai sobre a igreja; o scrim garante leitura sem caixa dura */
+  .hero-when-where {
+    position: relative;
+    display: inline-block;
+    padding: 1.15rem 3.5rem 1.3rem;
+  }
+
+  /* névoa difusa em vez de caixa — várias manchas suaves + blur
+     dissolvem as bordas, dando aspecto de nuvem sobre a igreja */
+  .hero-when-where::before {
+    content: "";
+    position: absolute;
+    inset: -0.75rem -1.5rem;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 52% 60% at 42% 46%, rgba(253, 251, 247, 0.97), rgba(253, 251, 247, 0) 72%),
+      radial-gradient(ellipse 48% 55% at 62% 58%, rgba(253, 251, 247, 0.94), rgba(253, 251, 247, 0) 74%),
+      radial-gradient(ellipse 60% 66% at 50% 50%, rgba(253, 251, 247, 0.8), rgba(253, 251, 247, 0) 78%);
+    filter: blur(16px);
+  }
 }
 
 /* mobile: mais espaço abaixo do header fixo */
@@ -321,7 +392,7 @@ h1, h2, h3, h4 {
 
 .watercolor-decor {
   z-index: 0;
-  opacity: 0.8;
+  opacity: 0.55;
   mix-blend-mode: multiply;
 }
 

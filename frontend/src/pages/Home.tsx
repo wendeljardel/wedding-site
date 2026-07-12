@@ -50,7 +50,7 @@ function Hero() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 1.1, ease: 'easeOut' }}
-          className="flex flex-col items-center gap-2 px-4 w-full max-w-lg mx-auto text-center"
+          className="hero-overlay-content flex flex-col items-center gap-2 px-4 w-full max-w-lg mx-auto text-center"
         >
           {/* linha decorativa topo */}
           <motion.div
@@ -66,7 +66,7 @@ function Hero() {
             className="font-script text-[var(--color-name)] leading-none mt-4"
             style={{ fontSize: 'clamp(2.8rem, 7vw, 5.5rem)' }}
           >
-            Thamires &amp; Wendel
+            Thamires<span className="name-connector">&amp;</span>Wendel
           </p>
 
           {/* divisor com ornamento */}
@@ -79,17 +79,15 @@ function Hero() {
             <span className="hero-name-rule-sm" />
           </div>
 
-          <p className="eyebrow text-[var(--color-date)] tracking-[0.42em] mt-2"
-            style={{ fontSize: '0.9rem' }}
-          >
-            06 · 09 · 2026
-          </p>
+          <div className="hero-when-where mt-2">
+            <p className="hero-date eyebrow text-[var(--color-date)] tracking-[0.42em]">
+              06 · 09 · 2026
+            </p>
 
-          <p className="hero-meta text-[var(--color-muted)] mt-1.5 tracking-[0.22em] uppercase"
-            style={{ fontSize: '0.82rem', fontWeight: 400 }}
-          >
-            Igreja Nossa Senhora do Carmo · Pacatuba, Ceará
-          </p>
+            <p className="hero-meta text-[var(--color-muted)] mt-1.5 tracking-[0.22em] uppercase">
+              Igreja Nossa Senhora do Carmo · Pacatuba, Ceará
+            </p>
+          </div>
         </motion.div>
       </div>
 
@@ -175,7 +173,7 @@ function About() {
         <div className="invite-card max-w-3xl mx-auto px-8 py-12 md:px-16 md:py-16 text-center">
           <h2 className="text-3xl md:text-5xl font-display leading-snug">
             <span className="italic-display">Thamires</span>
-            {' '}e{' '}
+            <span className="name-connector">e</span>
             <span className="italic-display">Wendel</span>
             {' '}convidam você com alegria para celebrar a união de nossas vidas.
           </h2>

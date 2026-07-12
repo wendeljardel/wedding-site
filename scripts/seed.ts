@@ -2,7 +2,7 @@
   Popula a tabela wedding-gifts com o conteudo de infra/seed-gifts.json.
 
   Uso:
-    AWS_REGION=sa-east-1 npm --prefix scripts run seed
+    AWS_REGION=us-east-1 npm --prefix scripts run seed
 
   Variaveis opcionais:
     TABLE_NAME (default: wedding-gifts)

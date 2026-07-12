@@ -3,18 +3,38 @@
 #
 # Requisitos:
 #   - AWS CLI configurado (aws configure)
-#   - Variaveis abaixo definidas, ou via .env carregado pelo seu shell:
-#       S3_BUCKET=meu-bucket-do-site
-#       CLOUDFRONT_DISTRIBUTION_ID=E123ABC456DEF
+#   - Terraform aplicado (terraform apply) na pasta terraform/
+#
+# O bucket e a distribuicao sao descobertos automaticamente a partir dos
+# outputs do Terraform (site_bucket_name / distribution_id). Da pra sobrescrever:
+#       S3_BUCKET=...                     (opcional, pula a descoberta)
+#       CLOUDFRONT_DISTRIBUTION_ID=...    (opcional, pula a descoberta)
 #
 # Uso: ./scripts/deploy-frontend.sh
 
 set -euo pipefail
 
-: "${S3_BUCKET:?defina S3_BUCKET}"
-: "${CLOUDFRONT_DISTRIBUTION_ID:?defina CLOUDFRONT_DISTRIBUTION_ID}"
-
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TF_DIR="$ROOT_DIR/terraform"
+
+tf_output() {
+  terraform -chdir="$TF_DIR" output -raw "$1" 2>/dev/null
+}
+
+if [[ -z "${S3_BUCKET:-}" ]]; then
+  echo "==> descobrindo bucket S3 nos outputs do Terraform"
+  S3_BUCKET="$(tf_output site_bucket_name)"
+fi
+if [[ -z "${CLOUDFRONT_DISTRIBUTION_ID:-}" ]]; then
+  echo "==> descobrindo distribuicao CloudFront nos outputs do Terraform"
+  CLOUDFRONT_DISTRIBUTION_ID="$(tf_output distribution_id)"
+fi
+
+: "${S3_BUCKET:?nao consegui obter S3_BUCKET (rode 'terraform apply' primeiro ou defina a var)}"
+: "${CLOUDFRONT_DISTRIBUTION_ID:?nao consegui obter CLOUDFRONT_DISTRIBUTION_ID (rode 'terraform apply' primeiro ou defina a var)}"
+
+echo "    bucket:       $S3_BUCKET"
+echo "    distribution: $CLOUDFRONT_DISTRIBUTION_ID"
 
 echo "==> npm run build (frontend)"
 npm --prefix "$ROOT_DIR/frontend" run build

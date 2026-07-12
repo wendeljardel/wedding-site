@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   api,
   ApiError,
@@ -8,8 +8,18 @@ import {
 
 type Tab = 'gifts' | 'honeymoon'
 
+const TOKEN_KEY = 'wedding-admin-token'
+
+function readStoredToken(): string {
+  try {
+    return localStorage.getItem(TOKEN_KEY) ?? ''
+  } catch {
+    return ''
+  }
+}
+
 export default function Admin() {
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState(readStoredToken)
   const [authed, setAuthed] = useState(false)
   const [gifts, setGifts] = useState<AdminGift[] | null>(null)
   const [claims, setClaims] = useState<HoneymoonClaim[] | null>(null)
@@ -28,9 +38,20 @@ export default function Admin() {
       setGifts(giftsData)
       setClaims(claimsData)
       setAuthed(true)
+      setToken(t)
+      try {
+        localStorage.setItem(TOKEN_KEY, t)
+      } catch {
+        /* ignore quota / private mode */
+      }
     } catch (err) {
       if (err instanceof ApiError && err.status === 401) {
         setError('Token invalido.')
+        try {
+          localStorage.removeItem(TOKEN_KEY)
+        } catch {
+          /* ignore */
+        }
       } else {
         setError('Falha ao carregar. Verifique sua conexao.')
       }
@@ -40,6 +61,25 @@ export default function Admin() {
     } finally {
       setBusy(false)
     }
+  }
+
+  useEffect(() => {
+    const stored = readStoredToken()
+    if (stored) void login(stored)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- auto-login once on mount
+  }, [])
+
+  function logout() {
+    try {
+      localStorage.removeItem(TOKEN_KEY)
+    } catch {
+      /* ignore */
+    }
+    setToken('')
+    setAuthed(false)
+    setGifts(null)
+    setClaims(null)
+    setError(null)
   }
 
   async function reload() {
@@ -111,12 +151,20 @@ export default function Admin() {
     <section className="max-w-5xl mx-auto px-6 py-12">
       <header className="flex items-center justify-between mb-10">
         <h1 className="text-3xl font-serif">Painel admin</h1>
-        <button
-          onClick={reload}
-          className="text-xs uppercase tracking-widest border border-[var(--color-sand)] px-4 py-2"
-        >
-          Recarregar
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={reload}
+            className="text-xs uppercase tracking-widest border border-[var(--color-sand)] px-4 py-2"
+          >
+            Recarregar
+          </button>
+          <button
+            onClick={logout}
+            className="text-xs uppercase tracking-widest border border-[var(--color-sand)] px-4 py-2"
+          >
+            Sair
+          </button>
+        </div>
       </header>
 
       <div className="flex gap-1 border-b border-[var(--color-sand)] mb-8">

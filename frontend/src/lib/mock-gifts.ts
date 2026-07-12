@@ -76,17 +76,6 @@ export const MOCK_GIFTS: Gift[] = [
     status: 'available',
   },
   {
-    giftId: 'frigideira-wok-tognana',
-    name: 'Frigideira wok Tognana Stone & Wood',
-    description:
-      'Wok 32 cm com tampa, aluminio forjado antiaderente, cabo amadeirado, compativel com inducao. Camicado.',
-    imageUrl: 'https://img.camicado.com.br/item/100751266/zoom/1.jpg',
-    price: 399.99,
-    storeUrl:
-      'https://www.camicado.com.br/p/frigideira-wok-inducao-com-tampa-tognana-stone-wood-32-cm/-/A-100751258-br.lc?sku=100751266',
-    status: 'available',
-  },
-  {
     giftId: 'garrafa-termica-austria',
     name: 'Garrafa termica Home Style Austria',
     description:
@@ -98,18 +87,6 @@ export const MOCK_GIFTS: Gift[] = [
     status: 'available',
   },
   {
-    giftId: 'toalha-piso-trussardi-linee',
-    name: 'Toalha de piso Trussardi Linee',
-    description:
-      'Toalha de piso 100% algodao, 48 x 80 cm, gramatura 720 g/m2, com fio penteado e moldura em jacquard. Casa Bergan.',
-    imageUrl:
-      'https://casabergan.fbitsstatic.net/img/p/toalha-de-piso-trussardi-linee-100-algodao-48cm-x-80cm-gramatura-720g-m-150362/338803.jpg?w=620&h=620',
-    price: 99.9,
-    storeUrl:
-      'https://www.casabergan.com.br/produto/toalha-de-piso-trussardi-linee-100-algodao-48cm-x-80cm-gramatura-720g-m-150362',
-    status: 'available',
-  },
-  {
     giftId: 'cutelo-tramontina-century',
     name: 'Cutelo Tramontina Century 7"',
     description:
@@ -118,29 +95,6 @@ export const MOCK_GIFTS: Gift[] = [
     price: 194.23,
     storeUrl:
       'https://www.amazon.com.br/Cutelo-Tramontina-Century-24026107-Preto/dp/B01MUEETIQ',
-    status: 'available',
-  },
-  {
-    giftId: 'aparador-grama-tramontina-ap1500t',
-    name: 'Aparador de grama Tramontina AP1500T',
-    description:
-      'Aparador de grama eletrico 1.500 W, diametro de corte de 28 cm, fio de nylon 1,8 mm com abastecimento automatico, ideal para acabamentos do jardim. Mercado Livre.',
-    imageUrl:
-      'https://http2.mlstatic.com/D_NQ_NP_2X_844184-MLA99451947164_112025-F.webp',
-    price: 249.9,
-    storeUrl:
-      'https://www.mercadolivre.com.br/tramontina-79634939-220v-laranjapreto/p/MLB9096807',
-    status: 'available',
-  },
-  {
-    giftId: 'tabuas-corte-tramontina-mixcolor',
-    name: 'Conjunto de tabuas Tramontina Mixcolor',
-    description:
-      'Conjunto de 5 tabuas de corte codificadas por cor com suporte, polipropileno com protecao antimicrobiana. Amazon.',
-    imageUrl: 'https://m.media-amazon.com/images/I/41T3EWYeW7L._AC_SL1024_.jpg',
-    price: 187.0,
-    storeUrl:
-      'https://www.amazon.com.br/gp/product/B076JMFSY3/ref=ox_sc_act_title_3?smid=A1ZZFT5FULY4LN&psc=1',
     status: 'available',
   },
 ]
