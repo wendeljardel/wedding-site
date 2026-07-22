@@ -27,6 +27,7 @@ interface Gift {
   price: number
   storeUrl: string
   status: 'available' | 'claimed'
+  multiClaim?: boolean
 }
 
 async function main() {

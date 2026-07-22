@@ -254,8 +254,19 @@ function GiftsTab({
   gifts: AdminGift[]
   onRelease: (giftId: string) => void
 }) {
-  const claimed = gifts.filter((g) => g.status === 'claimed')
-  const available = gifts.filter((g) => g.status === 'available')
+  const claimed = gifts.filter((g) => g.status === 'claimed' && !g.multiClaim)
+  const multiClaim = gifts.filter((g) => g.multiClaim)
+  const available = gifts.filter((g) => g.status === 'available' && !g.multiClaim)
+
+  const multiClaimRows = multiClaim.flatMap((g) =>
+    (g.claims ?? []).map((c, i) => ({
+      key: `${g.giftId}-${i}`,
+      giftName: g.name,
+      guestName: c.guestName,
+      claimedAt: c.claimedAt,
+    })),
+  )
+
   return (
     <>
       <h2 className="text-xl font-serif mb-4">Reservados ({claimed.length})</h2>
@@ -296,14 +307,56 @@ function GiftsTab({
         </tbody>
       </table>
 
-      <h2 className="text-xl font-serif mb-4">Disponiveis ({available.length})</h2>
+      {multiClaim.length > 0 && (
+        <>
+          <h2 className="text-xl font-serif mb-4 mt-12">
+            Presentes compartilhados ({multiClaimRows.length})
+          </h2>
+          <p className="text-xs text-[var(--color-muted)] mb-4">
+            Estes presentes podem ser dados por varios convidados. A lista abaixo
+            registra quem clicou em confirmar e foi redirecionado para a loja.
+          </p>
+          <table className="w-full text-sm mb-12 border-collapse">
+            <thead>
+              <tr className="text-left border-b border-[var(--color-sand)]">
+                <th className="py-2">Presente</th>
+                <th>Quem confirmou</th>
+                <th>Quando</th>
+              </tr>
+            </thead>
+            <tbody>
+              {multiClaimRows.map((row) => (
+                <tr key={row.key} className="border-b border-[var(--color-sand)]">
+                  <td className="py-3">{row.giftName}</td>
+                  <td className="font-mono">{row.guestName}</td>
+                  <td className="text-[var(--color-muted)]">
+                    {row.claimedAt
+                      ? new Date(row.claimedAt).toLocaleString('pt-BR')
+                      : '-'}
+                  </td>
+                </tr>
+              ))}
+              {multiClaimRows.length === 0 && (
+                <tr>
+                  <td colSpan={3} className="py-6 text-[var(--color-muted)] text-center">
+                    Nenhuma confirmacao ainda.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </>
+      )}
+
+      <h2 className="text-xl font-serif mb-4">Disponiveis ({available.length + multiClaim.length})</h2>
       <ul className="grid gap-2 sm:grid-cols-2">
-        {available.map((g) => (
+        {[...available, ...multiClaim].map((g) => (
           <li
             key={g.giftId}
             className="text-sm py-1 border-b border-[var(--color-sand)]"
           >
             {g.name}
+            {g.multiClaim ? ' (varios convidados)' : ''}
           </li>
         ))}
       </ul>

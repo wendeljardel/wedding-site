@@ -6,6 +6,11 @@
 
 export type GiftStatus = 'available' | 'claimed'
 
+export interface GiftClaim {
+  guestName: string
+  claimedAt: string
+}
+
 export interface Gift {
   giftId: string
   name: string
@@ -14,11 +19,13 @@ export interface Gift {
   price: number
   storeUrl: string
   status: GiftStatus
+  multiClaim?: boolean
 }
 
 export interface AdminGift extends Gift {
   claimedBy?: string
   claimedAt?: string
+  claims?: GiftClaim[]
 }
 
 export interface HoneymoonClaim {

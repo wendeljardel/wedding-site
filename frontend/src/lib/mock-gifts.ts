@@ -97,4 +97,49 @@ export const MOCK_GIFTS: Gift[] = [
       'https://www.amazon.com.br/Cutelo-Tramontina-Century-24026107-Preto/dp/B01MUEETIQ',
     status: 'available',
   },
+  {
+    giftId: 'climatizador-wap-air-fresh-4-em-1',
+    name: 'Climatizador de ar Wap Air Fresh 4 em 1',
+    description:
+      'Climatizador torre silencioso com reservatorio de essencia, 3 niveis de velocidade, 90 W, cor cinza, 220 V. Mercado Livre.',
+    imageUrl: '/gifts/climatizador-wap-air-fresh-4-em-1.png',
+    price: 399.0,
+    storeUrl:
+      'https://www.mercadolivre.com.br/climatizador-de-ar-wap-air-fresh-4-em-1-silencioso-com-reser/p/MLB62253167?product_trigger_id=MLB39766331&attributes=COLOR%3ACinza%2CVOLTAGE%3AMLB62253167&pdp_filters=item_id%3AMLB5251155650&applied_product_filters=MLB39766331&from=gshop&picker=true&quantity=1',
+    status: 'available',
+  },
+  {
+    giftId: 'cafeteira-french-press-home-style-wood',
+    name: 'Cafeteira French Press Home Style Wood',
+    description:
+      'Prensa francesa de 1 L em vidro e inox, com alca de madeira, linha Home Style. Camicado.',
+    imageUrl: '/gifts/cafeteira-french-press-home-style-wood.png',
+    price: 159.99,
+    storeUrl:
+      'https://www.camicado.com.br/p/cafeteira-french-press-home-style-wood/-/A-100903944-br.lc?sku=100903952',
+    status: 'available',
+  },
+  {
+    giftId: 'moedor-sal-pimenta-home-style-sofia',
+    name: 'Moedor de Sal e Pimenta Home Style Sofia',
+    description:
+      'Moedor manual para sal grosso ou graos de pimenta, mecanismo em ceramica, linha Home Style Sofia. Camicado.',
+    imageUrl: '/gifts/moedor-sal-pimenta-home-style-sofia.png',
+    price: 99.99,
+    storeUrl:
+      'https://www.camicado.com.br/p/moedor-de-sal-e-pimenta-home-style-sofia/-/A-101143203-br.lc?sku=101143211',
+    status: 'available',
+  },
+  {
+    giftId: 'gift-card-zift-150',
+    name: 'Gift Card Zift Multimarcas — R$ 150',
+    description:
+      'Cartao presente multimarca Zift com credito de R$ 150 para usar em mais de 40 marcas (Riachuelo, Airbnb, Tok&Stok, Centauro e outras). Americanas.',
+    imageUrl: '/gifts/gift-card-zift-150.png',
+    price: 150.0,
+    storeUrl:
+      'https://www.americanas.com.br/multibrand-zift-zilhoes-de-opcoes-8623937/p',
+    status: 'available',
+    multiClaim: true,
+  },
 ]

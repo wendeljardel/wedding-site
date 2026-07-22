@@ -20,6 +20,7 @@ function hasRespondedRsvp(): boolean {
 export default function App() {
   return (
     <div className="min-h-full flex flex-col bg-[var(--color-paper)]">
+      <ScrollToTop />
       <Header />
       <main className="flex-1">
         <Routes>
@@ -32,6 +33,17 @@ export default function App() {
       <RsvpGate />
     </div>
   )
+}
+
+/** Garante que a nova rota começa no topo (ex.: Home → /presentes). */
+function ScrollToTop() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [pathname])
+
+  return null
 }
 
 /*

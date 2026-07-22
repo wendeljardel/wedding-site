@@ -31,7 +31,9 @@ export default function ClaimGiftModal({ gift, onClose, onClaimed }: Props) {
     setError(null)
     try {
       const { storeUrl } = await api.claimGift(gift.giftId, name.trim())
-      onClaimed({ ...gift, status: 'claimed' })
+      if (!gift.multiClaim) {
+        onClaimed({ ...gift, status: 'claimed' })
+      }
       window.open(storeUrl, '_blank', 'noopener,noreferrer')
       onClose()
     } catch (err) {
@@ -75,8 +77,9 @@ export default function ClaimGiftModal({ gift, onClose, onClaimed }: Props) {
             )}
 
             <p className="text-xs text-[var(--color-muted)] leading-relaxed">
-              Ao confirmar, voce sera redirecionado para a loja para finalizar a compra.
-              O presente fica reservado em seu nome.
+              {gift.multiClaim
+                ? 'Ao confirmar, voce sera redirecionado para a loja. Este presente continua disponivel para outros convidados.'
+                : 'Ao confirmar, voce sera redirecionado para a loja para finalizar a compra. O presente fica reservado em seu nome.'}
             </p>
 
             <div className="flex gap-3 pt-2">

@@ -13,7 +13,8 @@ export const handler: APIGatewayProxyHandlerV2 = async () => {
     const res = await ddb.send(
       new ScanCommand({
         TableName: GIFTS_TABLE,
-        ProjectionExpression: 'giftId, #n, description, imageUrl, price, storeUrl, #s',
+        ProjectionExpression:
+          'giftId, #n, description, imageUrl, price, storeUrl, #s, multiClaim',
         ExpressionAttributeNames: { '#n': 'name', '#s': 'status' },
       }),
     )

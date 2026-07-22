@@ -14,6 +14,16 @@ export default function Gifts() {
   const [selectedCota, setSelectedCota] = useState<HoneymoonCota | null>(null)
 
   useEffect(() => {
+    const useProdApi = import.meta.env.VITE_USE_PROD_API === 'true'
+
+    // Em dev, usa mock-gifts.json por padrao (sincronizado com seed-gifts.json).
+    // A API de producao so e consultada se VITE_USE_PROD_API=true no .env.
+    if (import.meta.env.DEV && !useProdApi) {
+      setGifts(MOCK_GIFTS)
+      setLoadError(true)
+      return
+    }
+
     api
       .listGifts()
       .then(setGifts)
@@ -24,6 +34,7 @@ export default function Gifts() {
   }, [])
 
   function handleClaimed(updated: Gift) {
+    if (updated.multiClaim) return
     setGifts((prev) =>
       prev ? prev.map((g) => (g.giftId === updated.giftId ? updated : g)) : prev,
     )
@@ -164,7 +175,8 @@ function HoneymoonSection({
 }
 
 function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
-  const isClaimed = gift.status === 'claimed'
+  const isClaimed = !gift.multiClaim && gift.status === 'claimed'
+
   return (
     <div className="flex flex-col h-full">
       <a
