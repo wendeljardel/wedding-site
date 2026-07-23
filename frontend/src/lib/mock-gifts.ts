@@ -131,6 +131,17 @@ export const MOCK_GIFTS: Gift[] = [
     status: 'available',
   },
   {
+    giftId: 'micro-ondas-brastemp-bms23ae',
+    name: 'Micro-ondas Brastemp BMS23AE 23L',
+    description:
+      'Micro-ondas 23 L preto com multi preparos, receitas pre-programadas e funcao Auto Clean. Escolha 110 V ou 220 V na loja. Brastemp.',
+    imageUrl: '/gifts/micro-ondas-brastemp-bms23ae.png',
+    price: 587.0,
+    storeUrl:
+      'https://www.brastemp.com.br/micro-ondas-brastemp-23l-preto-com-multi-preparos---bms23ae/p',
+    status: 'available',
+  },
+  {
     giftId: 'gift-card-zift-150',
     name: 'Gift Card Zift Multimarcas — R$ 150',
     description:
