@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState, type ReactNode } from 'react'
 import WatercolorDecor, { WatercolorDivider, BotanicalSeparator } from '../components/WatercolorDecor'
 import RsvpModal from '../components/RsvpModal'
+import PhotoLightbox from '../components/PhotoLightbox'
+import { GALLERY_PHOTOS, thumbUrl } from '../lib/gallery-photos'
 
 const MONOGRAM_WREATH = '/assets/monogram-wreath.png'
 const HERO_CHURCH    = '/assets/hero-church.png'
 
-const WEDDING_DATE = new Date('2026-09-06T16:00:00-03:00')
+const WEDDING_DATE = new Date('2026-09-06T15:30:00-03:00')
 
 export default function Home() {
   return (
@@ -17,8 +19,7 @@ export default function Home() {
       <About />
       <Details />
       <Schedule />
-      <Bride />
-      <Groom />
+      <OurStory />
       <Gallery />
       <Rsvp />
       <Registry />
@@ -170,20 +171,21 @@ function Countdown() {
 ═══════════════════════════════════════════════════════════ */
 function About() {
   return (
-    <Section id="about" eyebrow="Um encontro feito no céu" variant="sage">
+    <Section id="about" eyebrow="Nosso convite" variant="sage">
       <Fade>
         <div className="invite-card max-w-3xl mx-auto px-8 py-12 md:px-16 md:py-16 text-center">
           <h2 className="text-3xl md:text-5xl font-display leading-snug">
             <span className="italic-display">Thamires</span>
             <span className="name-connector">e</span>
             <span className="italic-display">Wendel</span>
-            {' '}convidam você com alegria para celebrar a união de nossas vidas.
+            {' '}convidam você para celebrar o dia em que suas vidas se tornam uma só.
           </h2>
           <WatercolorDivider />
           <p className="max-w-xl mx-auto text-[var(--color-muted)] text-base leading-relaxed">
-            A cerimônia será às 16h na Igreja Nossa Senhora do Carmo, em Pacatuba.
-            A recepção segue na Villa Cajá, no pé de serra, em clima de campo
-            serrano. Sua presença é o que tornará esse dia inesquecível.
+            A cerimônia acontece às 15h30, na Igreja Nossa Senhora do Carmo, em
+            Pacatuba. Chegue a partir das 15h para acompanhar tudo de perto.
+            Depois seguimos juntos para a Villa Cajá, onde a festa continua.
+            Sua presença é o que vai tornar esse dia inesquecível.
           </p>
           <div className="palette-bar mt-8">
             <span /><span /><span /><span /><span /><span />
@@ -220,7 +222,7 @@ function Details() {
           <DetailBlock
             eyebrow="Quando"
             title="06 de Setembro de 2026"
-            lines={['Domingo', 'Cerimônia: 16h']}
+            lines={['Domingo', 'Chegada: 15h', 'Cerimônia: 15h30']}
             icon={<IconClock />}
           />
           <DetailBlock
@@ -230,9 +232,9 @@ function Details() {
             icon={<IconChurch />}
           />
           <DetailBlock
-            eyebrow="Recepção"
+            eyebrow="Festa"
             title="Villa Cajá"
-            lines={['No pé de serra', 'Ambiente de campo serrano']}
+            lines={['Logo após a cerimônia']}
             icon={<IconCelebration />}
           />
         </div>
@@ -298,10 +300,10 @@ function IconCelebration() {
    SCHEDULE (Programação do dia)
 ═══════════════════════════════════════════════════════════ */
 const SCHEDULE_ITEMS = [
-  { time: '15h30', label: 'Recepção dos convidados', detail: 'Chegada à Igreja N. S. do Carmo' },
-  { time: '16h00', label: 'Cerimônia', detail: 'Pacatuba, Ceará' },
-  { time: '17h30', label: 'Coquetel & fotos', detail: 'Jardim da vila' },
-  { time: '19h00', label: 'Jantar & celebração', detail: 'Villa Cajá — campo serrano' },
+  { time: '15h00', label: 'Chegada dos convidados', detail: 'Igreja Nossa Senhora do Carmo' },
+  { time: '15h30', label: 'Cerimônia', detail: 'Pacatuba, Ceará' },
+  { time: '17h30', label: 'Coquetel & fotos', detail: 'Jardim da Villa Cajá' },
+  { time: '19h00', label: 'Jantar', detail: 'Villa Cajá' },
 ]
 
 function Schedule() {
@@ -315,9 +317,8 @@ function Schedule() {
               <span className="divider-rule" />Programação<span className="divider-rule" />
             </p>
             <h2 className="mt-5 text-3xl md:text-4xl font-display">
-              O{' '}
+              O grande{' '}
               <span className="font-script text-[var(--color-magenta)] text-4xl md:text-5xl">dia</span>
-              {' '}a dia
             </h2>
           </header>
         </Fade>
@@ -356,89 +357,63 @@ function Schedule() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   BRIDE & GROOM
+   OUR STORY (Nossa história)
 ═══════════════════════════════════════════════════════════ */
-function Bride() {
+function OurStory() {
   return (
-    <Person
-      eyebrow="A noiva"
-      name="Thamires"
-      bio="Conte aqui um pouco da história dela: onde cresceu, o que faz e o que mais ama no mundo."
-      image="/photos/gallery-thamires.png"
-      align="left"
-      decorVariant="magenta"
-    />
-  )
-}
-
-function Groom() {
-  return (
-    <Person
-      eyebrow="O noivo"
-      name="Wendel"
-      bio="Conte aqui um pouco da história dele: trajetória, paixões e o que torna esse encontro tão especial."
-      image="/photos/gallery-rock.jpg"
-      align="right"
-      decorVariant="terracotta"
-    />
-  )
-}
-
-function Person({
-  eyebrow, name, bio, image, align, decorVariant,
-}: {
-  eyebrow: string
-  name: string
-  bio: string
-  image: string
-  align: 'left' | 'right'
-  decorVariant: 'magenta' | 'terracotta' | 'sage'
-}) {
-  const textAlign = align === 'left' ? 'text-center md:text-left' : 'text-center md:text-right'
-
-  const text = (
-    <Fade>
-      <div className={`relative px-6 md:px-14 py-12 md:py-16 max-w-md mx-auto md:mx-0 ${textAlign}`}>
-        <WatercolorDecor
-          variant={decorVariant}
-          position={align === 'left' ? 'top-right' : 'top-left'}
-          size="sm"
-          className="opacity-50"
+    <section id="our-story" className="section-watercolor grid md:grid-cols-2 items-center max-w-6xl mx-auto">
+      <div className="aspect-[4/5] md:aspect-auto md:h-[540px] overflow-hidden photo-frame">
+        <motion.img
+          initial={{ scale: 1.04 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.4, ease: 'easeOut' }}
+          src="/photos/gallery-couple.png"
+          alt="Thamires e Wendel"
+          className="w-full h-full object-cover"
         />
-        <p className="eyebrow">{eyebrow}</p>
-        <h3 className="mt-3 text-5xl md:text-6xl font-display italic-display leading-none">
-          {name}
-        </h3>
-        <WatercolorDivider />
-        <p className="text-[var(--color-muted)] leading-relaxed">{bio}</p>
       </div>
-    </Fade>
-  )
 
-  const img = (
-    <div className="aspect-[4/5] md:aspect-auto md:h-[540px] overflow-hidden photo-frame">
-      <motion.img
-        initial={{ scale: 1.04 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.4, ease: 'easeOut' }}
-        src={image}
-        alt=""
-        className="w-full h-full object-cover"
-      />
-    </div>
-  )
-
-  return (
-    <section className="section-watercolor grid md:grid-cols-2 items-center max-w-6xl mx-auto">
-      {align === 'left' ? (
-        <>{img}{text}</>
-      ) : (
-        <>
-          <div className="order-2 md:order-1 flex justify-center md:justify-end">{text}</div>
-          <div className="order-1 md:order-2">{img}</div>
-        </>
-      )}
+      <Fade>
+        <div className="relative px-6 md:px-14 py-12 md:py-16 max-w-md mx-auto md:mx-0 text-center md:text-left">
+          <WatercolorDecor
+            variant="magenta"
+            position="top-right"
+            size="sm"
+            className="opacity-50"
+          />
+          <p className="eyebrow">Nossa história</p>
+          <h3 className="mt-3 text-4xl md:text-5xl font-display italic-display leading-tight">
+            Dos grupos da paróquia ao altar
+          </h3>
+          <WatercolorDivider />
+          <div className="space-y-4 text-[var(--color-muted)] leading-relaxed">
+            <p>
+              A gente se conheceu nos grupos da Paróquia Nossa Senhora do
+              Perpétuo Socorro, sem imaginar o que aquele encontro ainda ia se
+              tornar. O reencontro veio no Instituto Federal do Ceará. Foi entre
+              lanches e conversas sem pressa na escada que a amizade começou.
+            </p>
+            <p>
+              Dali em diante, fomos nos descobrindo aos poucos, explorando
+              Fortaleza, provando cada comida nova que aparecia no caminho e
+              sempre inventando um motivo para ficar mais um pouco. Em 2016, o
+              que já era claro para nós dois ganhou nome e oficializamos o
+              namoro.
+            </p>
+            <p>
+              Em 2024 nasceu o nosso maior presente, nosso primeiro filho. Em
+              2025 ficou pronta a casa que construímos do zero, depois de muitos
+              desafios e planos refeitos pelo caminho.
+            </p>
+            <p>
+              Agora, em 2026, chegou a hora de receber o Sacramento do
+              Matrimônio e celebrar esse marco diante de Deus e de quem a gente
+              ama. É por isso que queremos você com a gente nesse dia.
+            </p>
+          </div>
+        </div>
+      </Fade>
     </section>
   )
 }
@@ -446,13 +421,9 @@ function Person({
 /* ═══════════════════════════════════════════════════════════
    GALLERY
 ═══════════════════════════════════════════════════════════ */
-const GALLERY_PHOTOS = [
-  '/photos/gallery-thamires.png',
-  '/photos/gallery-couple.png',
-  '/photos/gallery-rock.jpg',
-]
-
 function Gallery() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+
   return (
     <section id="gallery" className="section-alt section-watercolor py-24 md:py-32 px-6">
       <WatercolorDecor variant="mixed" position="center" size="lg" className="opacity-35" />
@@ -467,31 +438,46 @@ function Gallery() {
               Nossa história em{' '}
               <span className="font-script text-[var(--color-magenta)] text-4xl md:text-5xl">fotos</span>
             </h2>
+            <p className="mt-4 text-sm text-[var(--color-muted)]">
+              Toque em uma foto para ver maior
+            </p>
           </header>
         </Fade>
 
-        {/* layout masonry: foto principal maior à esquerda */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-          {GALLERY_PHOTOS.map((src, i) => (
-            <Fade key={src} delay={i * 0.06}>
-              <div
-                className={`overflow-hidden photo-frame bg-[var(--color-sand)] ${
-                  i === 0
-                    ? 'col-span-2 md:col-span-1 md:row-span-2 aspect-[4/3] md:aspect-auto md:h-full'
-                    : 'aspect-[4/5]'
-                }`}
-              >
-                <img
-                  src={src}
-                  alt=""
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                  className="w-full h-full object-cover hover:scale-[1.04] transition-transform duration-700 ease-out"
-                />
-              </div>
-            </Fade>
+        {/* mural em colunas: cada foto entra na altura natural dela, sem recorte */}
+        <div className="columns-2 md:columns-3 gap-3 md:gap-4">
+          {GALLERY_PHOTOS.map((photo, i) => (
+            <button
+              key={photo.slug}
+              type="button"
+              onClick={() => setOpenIndex(i)}
+              aria-label={`Ampliar foto: ${photo.alt}`}
+              className="group block w-full mb-3 md:mb-4 break-inside-avoid overflow-hidden
+                photo-frame bg-[var(--color-sand)] cursor-zoom-in
+                focus-visible:outline-2 focus-visible:outline-offset-2
+                focus-visible:outline-[var(--color-magenta)]"
+            >
+              <img
+                src={thumbUrl(photo.slug)}
+                alt={photo.alt}
+                width={photo.width}
+                height={photo.height}
+                loading={i < 4 ? 'eager' : 'lazy'}
+                decoding="async"
+                className="w-full h-auto align-middle group-hover:scale-[1.04]
+                  transition-transform duration-700 ease-out"
+              />
+            </button>
           ))}
         </div>
       </div>
+
+      <PhotoLightbox
+        photos={GALLERY_PHOTOS}
+        index={openIndex}
+        onClose={() => setOpenIndex(null)}
+        onNavigate={setOpenIndex}
+      />
     </section>
   )
 }
@@ -515,8 +501,9 @@ function Rsvp() {
           <span className="font-script text-[var(--color-magenta)] text-4xl md:text-5xl">presença</span>
         </h2>
         <p className="mt-6 max-w-lg mx-auto text-[var(--color-muted)] leading-relaxed">
-          Para prepararmos tudo com carinho, pedimos que confirme se poderá
-          celebrar esse dia conosco. Leva menos de um minuto.
+          Queremos preparar cada detalhe pensando em quem vai estar por perto.
+          Conte se você poderá celebrar esse dia com a gente. Leva menos de um
+          minuto.
         </p>
       </Fade>
       <Fade delay={0.12}>
@@ -546,8 +533,8 @@ function Registry() {
           <span className="font-script text-[var(--color-magenta)] text-4xl md:text-5xl">presentes</span>
         </h2>
         <p className="mt-6 max-w-lg mx-auto text-[var(--color-muted)] leading-relaxed">
-          Sua presença já é o nosso maior presente. Se ainda assim quiser
-          contribuir, separamos uma lista pensada com carinho.
+          Sua presença já é o nosso maior presente. Se você quiser nos
+          presentear, reunimos algumas ideias para a nossa primeira casa.
         </p>
       </Fade>
       <Fade delay={0.12}>
@@ -576,7 +563,7 @@ function Closing() {
           className="mx-auto w-28 md:w-36 monogram-wreath"
         />
         <h2 className="mt-4 text-xl md:text-3xl font-display max-w-xl mx-auto leading-snug">
-          Esperamos você nesse{' '}
+          Vamos te esperar nesse{' '}
           <span className="font-script text-[var(--color-magenta)] text-2xl md:text-4xl">dia especial</span>
         </h2>
         <p className="mt-3 eyebrow text-[var(--color-date)] tracking-[0.42em]">

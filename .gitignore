@@ -6,6 +6,10 @@ dist/
 build/
 *.tsbuildinfo
 
+# Fotos originais da galeria: repositorio publico, e o site serve apenas as
+# versoes WebP geradas por scripts/optimize-photos.py
+assets/photos-originais/
+
 # Env
 .env
 .env.local
