@@ -39,10 +39,16 @@ echo "    distribution: $CLOUDFRONT_DISTRIBUTION_ID"
 echo "==> npm run build (frontend)"
 npm --prefix "$ROOT_DIR/frontend" run build
 
+# o Finder cria .DS_Store dentro de public/ e o Vite copia pro build; publicar isso
+# expõe a lista de arquivos da pasta
+echo "==> removendo .DS_Store do build"
+find "$ROOT_DIR/frontend/dist" -name ".DS_Store" -delete
+
 echo "==> sincronizando assets (cache longo) com S3"
 aws s3 sync "$ROOT_DIR/frontend/dist/" "s3://$S3_BUCKET/" \
   --delete \
   --exclude "index.html" \
+  --exclude "*.DS_Store" \
   --cache-control "public,max-age=31536000,immutable"
 
 echo "==> subindo index.html (sem cache, com guarda)"
