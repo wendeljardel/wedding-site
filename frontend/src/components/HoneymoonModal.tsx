@@ -59,12 +59,12 @@ export default function HoneymoonModal({ cota, onClose }: Props) {
     if (!cota) return
     if (!name.trim()) return
     if (cota.amount === null && effectiveAmount < 10) {
-      setError('Valor minimo de R$ 10,00.')
+      setError('Valor mínimo de R$ 10,00.')
       return
     }
     if (!pixIsConfigured()) {
       setError(
-        'A chave Pix ainda nao foi configurada. Avise os noivos para usarem outra forma.',
+        'A chave Pix ainda não foi configurada. Avise os noivos para usarem outra forma.',
       )
       return
     }
@@ -89,7 +89,7 @@ export default function HoneymoonModal({ cota, onClose }: Props) {
     } catch (err) {
       console.error(err)
       setError(
-        'Nao consegui registrar o aviso, mas seu Pix pode ter sido recebido. ' +
+        'Não consegui registrar o aviso, mas seu Pix pode ter sido recebido. ' +
           'Avise os noivos pessoalmente para conferirem.',
       )
     } finally {
@@ -103,7 +103,7 @@ export default function HoneymoonModal({ cota, onClose }: Props) {
       setCopied(true)
       setTimeout(() => setCopied(false), 2500)
     } catch {
-      setError('Nao consegui copiar. Selecione o texto manualmente.')
+      setError('Não consegui copiar. Selecione o texto manualmente.')
     }
   }
 
@@ -232,8 +232,8 @@ function FormStep({
         )}
 
         <p className="text-xs text-[var(--color-muted)] leading-relaxed">
-          Na proxima tela vamos te mostrar o QR Code do Pix. Apos pagar, basta
-          clicar em &ldquo;Ja paguei&rdquo; para nos avisar.
+          Na próxima tela vamos mostrar o QR Code do Pix. Após pagar, basta
+          clicar em &ldquo;Já paguei&rdquo; para nos avisar.
         </p>
 
         <div className="flex gap-3 pt-2">
@@ -316,13 +316,13 @@ function PayingStep({
 
           <p className="text-xs text-[var(--color-muted)] mt-4 leading-relaxed">
             Abra o app do seu banco, escolha pagar com Pix Copia-e-Cola, cole
-            o codigo (ou aponte a camera no QR) e confirme. Depois volte aqui
-            e clique no botao abaixo.
+            o código (ou aponte a câmera para o QR) e confirme. Depois volte
+            aqui e clique no botão abaixo.
           </p>
         </>
       ) : (
         <p className="text-sm text-red-700 bg-red-50 border border-red-200 p-3">
-          Nao consegui gerar o Pix. Volte e tente novamente.
+          Não consegui gerar o Pix. Volte e tente novamente.
         </p>
       )}
 
@@ -347,7 +347,7 @@ function PayingStep({
           disabled={busy || !brCode}
           className="flex-1 px-4 py-3 btn-primary text-center disabled:opacity-50"
         >
-          {busy ? 'Registrando...' : 'Ja paguei'}
+          {busy ? 'Registrando...' : 'Já paguei'}
         </button>
       </div>
     </>
@@ -376,8 +376,8 @@ function SuccessStep({
           R$ {amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
         </strong>
         {' '}
-        para a cota &ldquo;{cota.title}&rdquo;. Vamos conferir o extrato e seu
-        carinho ja faz parte da nossa viagem.
+        para a cota &ldquo;{cota.title}&rdquo;. Vamos conferir o extrato, e seu
+        carinho já faz parte da nossa viagem.
       </p>
       <button
         type="button"

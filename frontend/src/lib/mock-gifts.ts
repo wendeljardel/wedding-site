@@ -10,7 +10,7 @@ export const MOCK_GIFTS: Gift[] = [
     giftId: 'kit-tapete-passadeira-missoni',
     name: 'Kit tapete + passadeira Missoni',
     description:
-      'Conjunto de tapete 65 cm + passadeira 1,10 m com base antiderrapante, padrao Missoni cinza. Casa Bergan.',
+      'Conjunto de tapete 65 cm + passadeira 1,10 m com base antiderrapante, padrão Missoni cinza. Casa Bergan.',
     imageUrl:
       'https://casabergan.fbitsstatic.net/img/p/kit-tapete-para-cozinha-65cm-passadeira-1-10m-missoni-antiderrapante-2-pecas-154653/350042-1.jpg?w=620&h=620',
     price: 129.9,
@@ -20,9 +20,9 @@ export const MOCK_GIFTS: Gift[] = [
   },
   {
     giftId: 'passadeira-listras-preto',
-    name: 'Passadeira de algodao',
+    name: 'Passadeira de algodão',
     description:
-      'Passadeira artesanal listrada preto e off-white, 0,60 x 1,40 m, em algodao reciclado com base antiderrapante. Casa Cortilla.',
+      'Passadeira artesanal listrada preto e off-white, 0,60 x 1,40 m, em algodão reciclado com base antiderrapante. Casa Cortilla.',
     imageUrl:
       'https://images.tcdn.com.br/img/img_prod/1383951/passadeira_listras_preto_1_20250829071649_603f725568e1.jpg',
     price: 187.0,
@@ -34,7 +34,7 @@ export const MOCK_GIFTS: Gift[] = [
     giftId: 'faca-tramontina-century',
     name: 'Faca Tramontina Century',
     description:
-      'Faca santoku 7 polegadas para fatiar e picar, lamina em aco inox e cabo de policarbonato. Amazon.',
+      'Faca santoku de 7 polegadas para fatiar e picar, lâmina em aço inox e cabo de policarbonato. Amazon.',
     imageUrl: 'https://m.media-amazon.com/images/I/41j19wxPs+L._AC_SL1500_.jpg',
     price: 237.5,
     storeUrl:
@@ -42,10 +42,20 @@ export const MOCK_GIFTS: Gift[] = [
     status: 'available',
   },
   {
-    giftId: 'potes-hermeticos-fresh-lock',
-    name: 'Kit de potes hermeticos Fresh Lock',
+    giftId: 'jogo-facas-tramontina-plenus-6-pecas',
+    name: 'Jogo de Facas Tramontina Plenus 6 Peças',
     description:
-      'Conjunto de potes de vidro borossilicato com trava hermetica, linha Fresh Lock. Mercado Livre.',
+      'Jogo com 4 facas, tesoura e cepo de madeira, lâminas em aço inox e cabos pretos de polipropileno. Linha Plenus. Amazon.',
+    imageUrl: '/gifts/jogo-facas-tramontina-plenus-6-pecas.png',
+    price: 161.63,
+    storeUrl: 'https://www.amazon.com.br/dp/B0772XQ7XQ',
+    status: 'available',
+  },
+  {
+    giftId: 'potes-hermeticos-fresh-lock',
+    name: 'Kit de potes herméticos Fresh Lock',
+    description:
+      'Conjunto de potes de vidro borossilicato com trava hermética, linha Fresh Lock. Mercado Livre.',
     imageUrl:
       'https://http2.mlstatic.com/D_NQ_NP_788813-MLA95734885164_102025-OO.png',
     price: 195.9,
@@ -55,9 +65,9 @@ export const MOCK_GIFTS: Gift[] = [
   },
   {
     giftId: 'panela-pressao-vancouver',
-    name: 'Panela de pressao Tramontina Vancouver',
+    name: 'Panela de pressão Tramontina Vancouver',
     description:
-      'Vancouver Effect 6 L em aluminio com revestimento Starflon Max antiaderente, 24 cm, preta. Amazon.',
+      'Vancouver Effect de 6 L em alumínio com revestimento Starflon Max antiaderente, 24 cm, preta. Amazon.',
     imageUrl: 'https://m.media-amazon.com/images/I/71vhS1jZqnL._AC_SL1500_.jpg',
     price: 243.99,
     storeUrl:
@@ -66,9 +76,9 @@ export const MOCK_GIFTS: Gift[] = [
   },
   {
     giftId: 'tabua-teak-grande',
-    name: 'Tabua Teak Grande',
+    name: 'Tábua Teak Grande',
     description:
-      'Tabua artesanal em madeira teca, 44 x 17 cm, com canaleta lateral para reter o caldo da carne. Projeto Recrie.',
+      'Tábua artesanal em madeira teca, 44 x 17 cm, com canaleta lateral para reter o caldo da carne. Projeto Recrie.',
     imageUrl:
       'https://www.projetorecrie.com.br/cdn/shop/files/Tabua_Teak_grande_sem_gravacao_grande.jpg',
     price: 108.5,
@@ -76,21 +86,10 @@ export const MOCK_GIFTS: Gift[] = [
     status: 'available',
   },
   {
-    giftId: 'garrafa-termica-austria',
-    name: 'Garrafa termica Home Style Austria',
-    description:
-      'Garrafa termica decorativa da linha Home Style, modelo Austria. Camicado.',
-    imageUrl: 'https://img.camicado.com.br/item/101594864/zoom/1.jpg',
-    price: 119.9,
-    storeUrl:
-      'https://www.camicado.com.br/p/garrafa-termica-home-style-austria/-/A-101387451-br.lc?sku=101594864',
-    status: 'available',
-  },
-  {
     giftId: 'cutelo-tramontina-century',
     name: 'Cutelo Tramontina Century 7"',
     description:
-      'Cutelo 7 polegadas em aco inox NSF, cabo de polipropileno preto, para cortar carnes e cortes mais firmes. Amazon.',
+      'Cutelo de 7 polegadas em aço inox NSF, cabo de polipropileno preto, para cortar carnes e cortes mais firmes. Amazon.',
     imageUrl: 'https://m.media-amazon.com/images/I/61ayC2xCp8L._AC_SL1500_.jpg',
     price: 194.23,
     storeUrl:
@@ -101,7 +100,7 @@ export const MOCK_GIFTS: Gift[] = [
     giftId: 'climatizador-wap-air-fresh-4-em-1',
     name: 'Climatizador de ar Wap Air Fresh 4 em 1',
     description:
-      'Climatizador torre silencioso com reservatorio de essencia, 3 niveis de velocidade, 90 W, cor cinza, 220 V. Mercado Livre.',
+      'Climatizador torre silencioso com reservatório de essência, 3 níveis de velocidade, 90 W, cor cinza, 220 V. Mercado Livre.',
     imageUrl: '/gifts/climatizador-wap-air-fresh-4-em-1.png',
     price: 399.0,
     storeUrl:
@@ -109,21 +108,21 @@ export const MOCK_GIFTS: Gift[] = [
     status: 'available',
   },
   {
-    giftId: 'cafeteira-french-press-home-style-wood',
-    name: 'Cafeteira French Press Home Style Wood',
+    giftId: 'garrafa-termica-home-style-mou',
+    name: 'Garrafa Térmica Home Style Mou 960 ml',
     description:
-      'Prensa francesa de 1 L em vidro e inox, com alca de madeira, linha Home Style. Camicado.',
-    imageUrl: '/gifts/cafeteira-french-press-home-style-wood.png',
-    price: 159.99,
+      'Garrafa térmica para café de 960 ml com alça de madeira, mantém a temperatura por horas, linha Home Style. Camicado.',
+    imageUrl: '/gifts/garrafa-termica-home-style-mou.png',
+    price: 119.99,
     storeUrl:
-      'https://www.camicado.com.br/p/cafeteira-french-press-home-style-wood/-/A-100903944-br.lc?sku=100903952',
+      'https://www.camicado.com.br/p/garrafa-termica-home-style-mou/-/A-100834192-br.lc?sku=100834205',
     status: 'available',
   },
   {
     giftId: 'moedor-sal-pimenta-home-style-sofia',
     name: 'Moedor de Sal e Pimenta Home Style Sofia',
     description:
-      'Moedor manual para sal grosso ou graos de pimenta, mecanismo em ceramica, linha Home Style Sofia. Camicado.',
+      'Moedor manual para sal grosso ou grãos de pimenta, mecanismo em cerâmica, linha Home Style Sofia. Camicado.',
     imageUrl: '/gifts/moedor-sal-pimenta-home-style-sofia.png',
     price: 99.99,
     storeUrl:
@@ -132,9 +131,9 @@ export const MOCK_GIFTS: Gift[] = [
   },
   {
     giftId: 'micro-ondas-brastemp-bms23ae',
-    name: 'Micro-ondas Brastemp BMS23AE 23L',
+    name: 'Micro-ondas Brastemp BMS23AE 23 L',
     description:
-      'Micro-ondas 23 L preto com multi preparos, receitas pre-programadas e funcao Auto Clean. Escolha 110 V ou 220 V na loja. Brastemp.',
+      'Micro-ondas de 23 L preto com multipreparos, receitas pré-programadas e função Auto Clean. Escolha 110 V ou 220 V na loja. Brastemp.',
     imageUrl: '/gifts/micro-ondas-brastemp-bms23ae.png',
     price: 587.0,
     storeUrl:
@@ -142,15 +141,157 @@ export const MOCK_GIFTS: Gift[] = [
     status: 'available',
   },
   {
+    giftId: 'jogo-cama-percal-day-by-day-king',
+    name: 'Jogo de Cama Percal 400 Fios Day by Day King — Wood Pearl',
+    description:
+      'Jogo de 4 peças em percal 400 fios com toque de pluma, tamanho King (lençol com elástico 193 x 203 cm, lençol sem elástico 250 x 280 cm e 2 fronhas). Cor Wood Pearl, linha Day by Day, Casa Di Valle. Renata Decorações.',
+    imageUrl: '/gifts/jogo-cama-percal-day-by-day-king.png',
+    price: 269.9,
+    storeUrl:
+      'https://www.renatadecoracoes.com/oferta-especial/jogo-de-cama-percal-400-fios-toque-de-pluma-4-pecas-day-by-day?variant_id=17782',
+    status: 'available',
+  },
+  {
+    giftId: 'jogo-cama-percal-day-by-day-king-branco',
+    name: 'Jogo de Cama Percal 400 Fios Toque de Pluma 4 Peças — Day by Day King Branco',
+    description:
+      'Jogo de 4 peças em percal 400 fios com toque de pluma, tamanho King (lençol com elástico 193 x 203 cm, lençol sem elástico 250 x 280 cm e 2 fronhas). Cor Branco, linha Day by Day, Casa Di Valle. Renata Decorações.',
+    imageUrl: '/gifts/jogo-cama-percal-day-by-day-king-branco.png',
+    price: 269.9,
+    storeUrl:
+      'https://www.renatadecoracoes.com/oferta-especial/jogo-de-cama-percal-400-fios-toque-de-pluma-4-pecas-day-by-day?variant_id=17630',
+    status: 'available',
+  },
+  {
+    giftId: 'lencol-king-elastico-branco',
+    name: 'Lençol Avulso King Com Elástico Percal 400 Fios — Branco',
+    description:
+      'Lençol avulso com elástico, tamanho King (193 x 203 x 40 cm), percal 400 fios toque de pluma, cor Branco, linha Day by Day. Renata Decorações.',
+    imageUrl: '/gifts/lencol-king-elastico-branco.png',
+    price: 139.9,
+    storeUrl:
+      'https://www.renatadecoracoes.com/cama/lencol-com-elastico/lencol-avulso-king-c-elastico-percal-400-fios-extra-macio?variant_id=3111',
+    status: 'available',
+  },
+  {
+    giftId: 'lencol-king-elastico-creme',
+    name: 'Lençol Avulso King Com Elástico Percal 400 Fios — Creme',
+    description:
+      'Lençol avulso com elástico, tamanho King (193 x 203 x 40 cm), percal 400 fios toque de pluma, cor Creme, linha Day by Day. Renata Decorações.',
+    imageUrl: '/gifts/lencol-king-elastico-creme.png',
+    price: 139.9,
+    storeUrl:
+      'https://www.renatadecoracoes.com/cama/lencol-com-elastico/lencol-avulso-king-c-elastico-percal-400-fios-extra-macio?variant_id=3113',
+    status: 'available',
+  },
+  {
+    giftId: 'travesseiro-intense-vision-premium',
+    name: 'Travesseiro Intense Vision Premium',
+    description:
+      'Travesseiro Buddemeyer Vision Premium Collection, 50 x 70 cm, extra macio, lavável na máquina. Precisamos de 2 unidades; cada convidado pode reservar 1. Camicado.',
+    imageUrl: '/gifts/travesseiro-intense-vision-premium.png',
+    price: 159.9,
+    storeUrl:
+      'https://www.camicado.com.br/p/travesseiro-intense-vision-premium/-/A-100787525-br.lc?sku=100787533',
+    status: 'available',
+    multiClaim: true,
+    maxClaims: 2,
+    claimCount: 0,
+  },
+  {
+    giftId: 'micro-retifica-dremel-3000-n10',
+    name: 'Micro-retífica Dremel 3000-N/10 90 W',
+    description:
+      'Micro-retífica de 90 W, 220 V, com estojo e 10 acessórios para corte, lixamento, polimento e gravação. Mercado Livre.',
+    imageUrl: '/gifts/micro-retifica-dremel-3000-n10.png',
+    price: 356.9,
+    storeUrl:
+      'https://www.mercadolivre.com.br/micro-retifica-dremel-3000-n10-90w-60hz/p/MLB15134255?product_trigger_id=MLB15053642&attributes=POWER%3A130+W%2CVOLTAGE%3A220V&picker=true&quantity=1',
+    status: 'available',
+  },
+  {
+    giftId: 'mesa-dobravel-luvinco-180m',
+    name: 'Mesa Dobrável Luvinco 1,80 m',
+    description:
+      'Mesa dobrável que vira maleta, com alça portátil, 1,80 m x 70 cm x 74 cm, cor preta, estrutura em aço e tampo em polietileno, suporta até 150 kg. Mercado Livre.',
+    imageUrl: '/gifts/mesa-dobravel-luvinco-180m.png',
+    price: 284.9,
+    storeUrl:
+      'https://www.mercadolivre.com.br/mesa-dobravel-vira-maleta-com-alca-portatil-180m-para-camping-pesca-jardim-area-externa-ou-interna-salao-de-festas-gourmet-cor-preto-luvinco/p/MLB45353247',
+    status: 'available',
+  },
+  {
+    giftId: 'purificador-agua-consul-cpb34',
+    name: 'Purificador de Água Consul — Natural e Gelada',
+    description:
+      'Purificador bivolt para mesa ou parede, com água natural e gelada, filtragem classe A, refil original Consul e alerta luminoso para troca. Magazine Luiza.',
+    imageUrl: '/gifts/purificador-agua-consul-cpb34.png',
+    price: 949.0,
+    storeUrl:
+      'https://www.magazineluiza.com.br/purificador-de-agua-natural-gelada-bivolt-mesa-parede-consul/p/hd7ag2ae66/ep/purf/',
+    status: 'available',
+  },
+  {
+    giftId: 'lavadora-alta-pressao-wap-wl-1800',
+    name: 'Lavadora de Alta Pressão Compacta WAP WL 1800',
+    description:
+      'Lavadora compacta e portátil de 1400 W, 1500 PSI e vazão de 360 L/h, cor amarela, 220 V. Inclui pistola, mangueira de 3 m e bico regulável. Mercado Livre.',
+    imageUrl: '/gifts/lavadora-alta-pressao-wap-wl-1800.png',
+    price: 299.9,
+    storeUrl:
+      'https://www.mercadolivre.com.br/lavadora-de-alta-pressao-compacta-wap-wl-1800-1400w-1500psi-360lh-220v/p/MLB53860589',
+    status: 'available',
+  },
+  {
+    giftId: 'cesto-roupas-duplo-ou-flow-50l-bege',
+    name: 'Cesto de Roupas Duplo OU Linha Flow 50 L — Bege',
+    description:
+      'Cesto com dois compartimentos ajustáveis e 50 L de capacidade, tampa basculante e abertura frontal, cor bege, linha Flow. Amazon.',
+    imageUrl: '/gifts/cesto-roupas-duplo-ou-flow-50l-bege.png',
+    price: 183.99,
+    storeUrl: 'https://www.amazon.com.br/dp/B0GKPZWZVD',
+    status: 'available',
+  },
+  {
+    giftId: 'forno-embutir-brastemp-boa84ae',
+    name: 'Forno de Embutir a Gás Brastemp BOA84AE 78 L',
+    description:
+      'Forno de embutir a gás de 78 L, preto, com grill e timer touch. Escolha 110 V ou 220 V na loja. Brastemp.',
+    imageUrl: '/gifts/forno-embutir-brastemp-boa84ae.png',
+    price: 1866.0,
+    storeUrl: 'https://www.brastemp.com.br/forno-a-gas-de-embutir-brastemp-boa84ae/p',
+    status: 'available',
+  },
+  {
     giftId: 'gift-card-zift-150',
     name: 'Gift Card Zift Multimarcas — R$ 150',
     description:
-      'Cartao presente multimarca Zift com credito de R$ 150 para usar em mais de 40 marcas (Riachuelo, Airbnb, Tok&Stok, Centauro e outras). Americanas.',
+      'Cartão-presente multimarca Zift com crédito de R$ 150 para usar em mais de 40 marcas (Riachuelo, Airbnb, Tok&Stok, Centauro e outras). Americanas.',
     imageUrl: '/gifts/gift-card-zift-150.png',
     price: 150.0,
     storeUrl:
       'https://www.americanas.com.br/multibrand-zift-zilhoes-de-opcoes-8623937/p',
     status: 'available',
     multiClaim: true,
+  },
+  {
+    giftId: 'mala-media-sestini-23kg',
+    name: 'Mala Média 23kg de Viagem Sestini',
+    description:
+      'Mala média espaçosa em ABS, rodas 360º silenciosas, cadeado integrado personalizável e 76 L de capacidade (68 x 44 x 28 cm). Cor preta, linha Essencial 2. Amazon.',
+    imageUrl: '/gifts/mala-media-sestini-23kg.png',
+    price: 349.0,
+    storeUrl: 'https://www.amazon.com.br/dp/B0H6F63J98',
+    status: 'available',
+  },
+  {
+    giftId: 'jogo-utensilios-tramontina-utility-5-pecas',
+    name: 'Jogo Utensílios Tramontina Utility Inox 5 Peças',
+    description:
+      'Kit para servir em aço inox com acabamento brilho: colher para arroz, concha para feijão, garfo trinchante, pegador de massa e pá para bolo. Linha Utility. Mercado Livre.',
+    imageUrl: '/gifts/jogo-utensilios-tramontina-utility-5-pecas.png',
+    price: 129.0,
+    storeUrl: 'https://www.mercadolivre.com.br/up/MLBU3152445397',
+    status: 'available',
   },
 ]

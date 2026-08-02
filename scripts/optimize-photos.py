@@ -37,6 +37,8 @@ PHOTOS = [
     ("WhatsApp Image 2026-07-26 at 12.26.50.jpeg", "historia-09", "Thamires e Wendel em uma festa, ela de vestido azul"),
     ("WhatsApp Image 2026-07-26 at 12.27.09.jpeg", "historia-10", "Thamires e Wendel em um jardim florido"),
     ("WhatsApp Image 2026-07-26 at 12.26.17.jpeg", "historia-11", "Thamires e Wendel abracados sob um pier, na beira do mar"),
+    ("historia-12-selfie-noite.png", "historia-12", "Thamires e Wendel em um momento a dois a noite"),
+    ("gabinete-portugues-leitura.png", "historia-13", "Thamires e Wendel no Real Gabinete Portugues de Leitura, no Rio de Janeiro"),
 ]
 
 

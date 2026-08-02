@@ -48,16 +48,34 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     const now = new Date().toISOString()
 
     if (gift.multiClaim) {
+      const claims = (gift.claims as Array<unknown> | undefined) ?? []
+      const maxClaims = gift.maxClaims as number | undefined
+      if (maxClaims != null && claims.length >= maxClaims) {
+        return error(409, 'gift already claimed')
+      }
+
+      const values: Record<string, unknown> = {
+        ':empty': [],
+        ':claim': [{ guestName, claimedAt: now }],
+      }
+
+      if (maxClaims != null) {
+        values[':maxClaims'] = maxClaims
+      }
+
       await ddb.send(
         new UpdateCommand({
           TableName: GIFTS_TABLE,
           Key: { giftId },
           UpdateExpression:
             'SET claims = list_append(if_not_exists(claims, :empty), :claim)',
-          ExpressionAttributeValues: {
-            ':empty': [],
-            ':claim': [{ guestName, claimedAt: now }],
-          },
+          ...(maxClaims != null
+            ? {
+                ConditionExpression:
+                  'size(if_not_exists(claims, :empty)) < :maxClaims',
+              }
+            : {}),
+          ExpressionAttributeValues: values,
         }),
       )
       return json(200, { storeUrl, multiClaim: true })

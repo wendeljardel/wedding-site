@@ -9,7 +9,7 @@ import { GALLERY_PHOTOS, thumbUrl } from '../lib/gallery-photos'
 const MONOGRAM_WREATH = '/assets/monogram-wreath.png'
 const HERO_CHURCH    = '/assets/hero-church.png'
 
-const WEDDING_DATE = new Date('2026-09-06T15:30:00-03:00')
+const WEDDING_DATE = new Date('2026-09-06T15:00:00-03:00')
 
 export default function Home() {
   return (
@@ -178,14 +178,14 @@ function About() {
             <span className="italic-display">Thamires</span>
             <span className="name-connector">e</span>
             <span className="italic-display">Wendel</span>
-            {' '}convidam você para celebrar o dia em que suas vidas se tornam uma só.
+            {' '}convidam você para celebrar o dia em que as duas vidas se tornam uma só.
           </h2>
           <WatercolorDivider />
           <p className="max-w-xl mx-auto text-[var(--color-muted)] text-base leading-relaxed">
-            A cerimônia acontece às 15h30, na Igreja Nossa Senhora do Carmo, em
-            Pacatuba. Chegue a partir das 15h para acompanhar tudo de perto.
-            Depois seguimos juntos para a Villa Cajá, onde a festa continua.
-            Sua presença é o que vai tornar esse dia inesquecível.
+            A cerimônia acontece às 15h, na Igreja Nossa Senhora do Carmo, em
+            Pacatuba. Pedimos que cheguem pontualmente para acompanhar tudo de
+            perto. Depois seguimos juntos para a Villa Cajá, onde a festa
+            continua. Sua presença é o que vai tornar esse dia inesquecível.
           </p>
           <div className="palette-bar mt-8">
             <span /><span /><span /><span /><span /><span />
@@ -222,7 +222,7 @@ function Details() {
           <DetailBlock
             eyebrow="Quando"
             title="06 de Setembro de 2026"
-            lines={['Domingo', 'Chegada: 15h', 'Cerimônia: 15h30']}
+            lines={['Domingo', 'Cerimônia: 15h', 'Cheguem pontualmente']}
             icon={<IconClock />}
           />
           <DetailBlock
@@ -235,7 +235,7 @@ function Details() {
             eyebrow="Festa"
             title="Villa Cajá"
             lines={['Logo após a cerimônia']}
-            icon={<IconCelebration />}
+            icon={<IconToast />}
           />
         </div>
       </div>
@@ -287,11 +287,14 @@ function IconChurch() {
     </svg>
   )
 }
-function IconCelebration() {
+function IconToast() {
   return (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 21l4-4m0 0L18 6l-4 4M7 17l11-11M9.5 7.5l7 7"/>
-      <circle cx="19" cy="5" r="1.5" fill="currentColor" stroke="none" opacity="0.6"/>
+      <path d="M7 3v5.5c0 2.2 1.3 4 5 4" />
+      <path d="M17 3v5.5c0 2.2-1.3 4-5 4" />
+      <path d="M12 12.5v2" />
+      <path d="M8.5 20h7" />
+      <path d="M12 14.5v5.5" />
     </svg>
   )
 }
@@ -300,8 +303,7 @@ function IconCelebration() {
    SCHEDULE (Programação do dia)
 ═══════════════════════════════════════════════════════════ */
 const SCHEDULE_ITEMS = [
-  { time: '15h00', label: 'Chegada dos convidados', detail: 'Igreja Nossa Senhora do Carmo' },
-  { time: '15h30', label: 'Cerimônia', detail: 'Pacatuba, Ceará' },
+  { time: '15h00', label: 'Cerimônia', detail: 'Igreja Nossa Senhora do Carmo — cheguem pontualmente' },
   { time: '17h30', label: 'Coquetel & fotos', detail: 'Jardim da Villa Cajá' },
   { time: '19h00', label: 'Jantar', detail: 'Villa Cajá' },
 ]
@@ -439,7 +441,7 @@ function Gallery() {
               <span className="font-script text-[var(--color-magenta)] text-4xl md:text-5xl">fotos</span>
             </h2>
             <p className="mt-4 text-sm text-[var(--color-muted)]">
-              Toque em uma foto para ver maior
+              Toque em uma foto para ampliar
             </p>
           </header>
         </Fade>

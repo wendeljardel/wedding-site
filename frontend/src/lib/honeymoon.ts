@@ -1,6 +1,7 @@
 /*
   Cotas de lua de mel exibidas em /presentes acima da lista de produtos.
   Para mudar valores, titulos ou subtitulos, edite aqui.
+  Mantenha os textos acentuados: eles aparecem direto para o convidado.
 */
 export interface HoneymoonCota {
   id: string
@@ -13,29 +14,29 @@ export interface HoneymoonCota {
 export const HONEYMOON_COTAS: HoneymoonCota[] = [
   {
     id: 'cafe-da-manha',
-    title: 'Cafe da manha pra dois',
-    subtitle: 'Pequenos prazeres do comeco do dia',
-    amount: 120,
+    title: 'Café da manhã para dois',
+    subtitle: 'Pequenos prazeres do começo do dia',
+    amount: 140,
     emoji: '☕',
   },
   {
     id: 'passeio',
-    title: 'Passeio inesquecivel',
+    title: 'Passeio inesquecível',
     subtitle: 'Para vivermos uma aventura juntos',
-    amount: 140,
+    amount: 160,
     emoji: '🌅',
   },
   {
     id: 'jantar',
-    title: 'Jantar romantico',
+    title: 'Jantar romântico',
     subtitle: 'Para brindar nossa primeira viagem de casados',
-    amount: 170,
+    amount: 190,
     emoji: '🍷',
   },
   {
     id: 'valor-livre',
     title: 'Valor livre',
-    subtitle: 'O quanto o coracao mandar',
+    subtitle: 'O quanto o coração mandar',
     amount: null,
     emoji: '💛',
   },

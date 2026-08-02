@@ -20,6 +20,10 @@ export interface Gift {
   storeUrl: string
   status: GiftStatus
   multiClaim?: boolean
+  /** Quantas reservas um presente multiClaim aceita. Sem limite se omitido. */
+  maxClaims?: number
+  /** Preenchido pela API publica: quantas reservas ja existem (sem expor nomes). */
+  claimCount?: number
 }
 
 export interface AdminGift extends Gift {

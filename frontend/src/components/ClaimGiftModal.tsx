@@ -31,16 +31,18 @@ export default function ClaimGiftModal({ gift, onClose, onClaimed }: Props) {
     setError(null)
     try {
       const { storeUrl } = await api.claimGift(gift.giftId, name.trim())
-      if (!gift.multiClaim) {
+      if (gift.multiClaim) {
+        onClaimed(gift)
+      } else {
         onClaimed({ ...gift, status: 'claimed' })
       }
       window.open(storeUrl, '_blank', 'noopener,noreferrer')
       onClose()
     } catch (err) {
       if (err instanceof ApiError && err.status === 409) {
-        setError('Ops! Alguem acabou de reservar este presente. Atualize a pagina e escolha outro.')
+        setError('Ops! Alguém acabou de reservar este presente. Atualize a página e escolha outro.')
       } else {
-        setError('Nao consegui registrar sua escolha. Tente novamente em instantes.')
+        setError('Não consegui registrar sua escolha. Tente novamente em instantes.')
       }
     } finally {
       setSubmitting(false)
@@ -77,9 +79,11 @@ export default function ClaimGiftModal({ gift, onClose, onClaimed }: Props) {
             )}
 
             <p className="text-xs text-[var(--color-muted)] leading-relaxed">
-              {gift.multiClaim
-                ? 'Ao confirmar, voce sera redirecionado para a loja. Este presente continua disponivel para outros convidados.'
-                : 'Ao confirmar, voce sera redirecionado para a loja para finalizar a compra. O presente fica reservado em seu nome.'}
+              {gift.multiClaim && gift.maxClaims != null
+                ? `Ao confirmar, você será redirecionado para a loja para comprar 1 unidade. Faltam ${gift.maxClaims - (gift.claimCount ?? 0)} de ${gift.maxClaims} unidades na lista.`
+                : gift.multiClaim
+                  ? 'Ao confirmar, você será redirecionado para a loja. Este presente continua disponível para outros convidados.'
+                  : 'Ao confirmar, você será redirecionado para a loja para finalizar a compra. O presente fica reservado em seu nome.'}
             </p>
 
             <div className="flex gap-3 pt-2">

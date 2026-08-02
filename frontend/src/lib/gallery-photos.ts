@@ -35,6 +35,10 @@ export const GALLERY_PHOTOS: GalleryPhoto[] = [
     alt: 'Thamires e Wendel em um jardim florido' },
   { slug: 'historia-11', width: 700, height: 935,
     alt: 'Thamires e Wendel abraçados sob um pier, na beira do mar' },
+  { slug: 'historia-12', width: 700, height: 933,
+    alt: 'Thamires e Wendel em um momento a dois à noite' },
+  { slug: 'historia-13', width: 700, height: 933,
+    alt: 'Thamires e Wendel no Real Gabinete Português de Leitura, no Rio de Janeiro' },
 ]
 
 export const thumbUrl = (slug: string) => `/photos/historia/${slug}-sm.webp`

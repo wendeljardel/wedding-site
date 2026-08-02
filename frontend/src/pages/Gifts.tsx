@@ -34,7 +34,18 @@ export default function Gifts() {
   }, [])
 
   function handleClaimed(updated: Gift) {
-    if (updated.multiClaim) return
+    if (updated.multiClaim) {
+      setGifts((prev) =>
+        prev
+          ? prev.map((g) =>
+              g.giftId === updated.giftId
+                ? { ...g, claimCount: (g.claimCount ?? 0) + 1 }
+                : g,
+            )
+          : prev,
+      )
+      return
+    }
     setGifts((prev) =>
       prev ? prev.map((g) => (g.giftId === updated.giftId ? updated : g)) : prev,
     )
@@ -63,14 +74,22 @@ export default function Gifts() {
             Lista de <span className="font-script text-magenta text-5xl md:text-6xl">presentes</span>
           </h1>
           <p className="mt-8 text-[var(--color-muted)] leading-relaxed">
-            Cada presente te leva direto para a loja onde a gente escolheu —
-            o valor atual aparece la. Ao confirmar sua reserva o item fica
-            indisponivel para os demais convidados.
+            Cada presente leva você direto para a loja on-line onde a gente
+            escolheu — o valor atual aparece lá. Você também pode usar o
+            modelo como referência e comprar em loja física, se preferir.
+            Ao confirmar sua reserva, o item fica indisponível para os
+            demais convidados.
+          </p>
+          <p className="mt-4 text-[var(--color-muted)] leading-relaxed">
+            Se puder, entregue antes do casamento ou envie direto para o
+            nosso endereço — fale com a gente para combinarmos. No dia da
+            festa, sua presença já basta: preferimos não receber presentes
+            na hora.
           </p>
         </motion.div>
         {loadError && (
           <p className="mt-8 text-xs text-amber-700 bg-amber-50 border border-amber-200 inline-block px-4 py-2">
-            modo demo: a API ainda nao esta no ar, mostrando dados de exemplo
+            modo demo: a API ainda não está no ar, mostrando dados de exemplo
           </p>
         )}
       </header>
@@ -127,12 +146,12 @@ function HoneymoonSection({
             <span className="divider-rule" />
           </p>
           <h2 className="mt-8 text-4xl md:text-5xl font-display">
-            Nos ajude a tornar nossa viagem inesquecivel
+            Nos ajude a tornar nossa viagem inesquecível
           </h2>
           <p className="mt-8 text-[var(--color-muted)] leading-relaxed">
-            Quer contribuir com nossa lua de mel? Escolha uma das cotas
+            Quer contribuir com a nossa lua de mel? Escolha uma das cotas
             abaixo (ou um valor livre) e contribua via Pix. Cada pequeno
-            gesto vai virar uma memoria pra gente guardar.
+            gesto vai virar uma memória para a gente guardar.
           </p>
         </motion.div>
       </header>
@@ -161,7 +180,7 @@ function HoneymoonSection({
             </p>
             <p className="mt-5 text-lg">
               {cota.amount === null
-                ? 'Voce escolhe'
+                ? 'Você escolhe'
                 : `R$ ${cota.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
             </p>
             <span className="inline-block mt-6 text-[10px] uppercase tracking-[0.25em] border-b border-[var(--color-gold)] text-[var(--color-sage-dark)] pb-0.5">
@@ -175,7 +194,15 @@ function HoneymoonSection({
 }
 
 function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
-  const isClaimed = !gift.multiClaim && gift.status === 'claimed'
+  const claimCount = gift.claimCount ?? 0
+  const isFull =
+    gift.multiClaim && gift.maxClaims != null
+      ? claimCount >= gift.maxClaims
+      : !gift.multiClaim && gift.status === 'claimed'
+  const slotsLeft =
+    gift.multiClaim && gift.maxClaims != null
+      ? gift.maxClaims - claimCount
+      : null
 
   return (
     <div className="flex flex-col h-full">
@@ -191,10 +218,10 @@ function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
           alt={gift.name}
           loading="lazy"
           className={`w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 ${
-            isClaimed ? 'grayscale opacity-60' : ''
+            isFull ? 'grayscale opacity-60' : ''
           }`}
         />
-        {isClaimed && (
+        {isFull && (
           <span className="absolute top-3 right-3 bg-[var(--color-sage-dark)] text-[var(--color-paper)] text-[10px] uppercase tracking-[0.25em] px-3 py-1.5">
             Reservado
           </span>
@@ -222,14 +249,18 @@ function GiftCard({ gift, onPick }: { gift: Gift; onPick: () => void }) {
         </p>
         <button
           type="button"
-          disabled={isClaimed}
+          disabled={isFull}
           onClick={(e) => {
             e.preventDefault()
             onPick()
           }}
           className="mt-6 w-full py-3.5 btn-primary text-center disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[var(--color-sage-dark)]"
         >
-          {isClaimed ? 'Indisponivel' : 'Vou dar este presente'}
+          {isFull
+            ? 'Indisponível'
+            : slotsLeft != null
+              ? `Vou dar 1 unidade (${slotsLeft} restante${slotsLeft === 1 ? '' : 's'})`
+              : 'Vou dar este presente'}
         </button>
       </div>
     </div>

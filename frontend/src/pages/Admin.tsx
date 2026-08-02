@@ -50,14 +50,14 @@ export default function Admin() {
       }
     } catch (err) {
       if (err instanceof ApiError && err.status === 401) {
-        setError('Token invalido.')
+        setError('Token inválido.')
         try {
           localStorage.removeItem(TOKEN_KEY)
         } catch {
           /* ignore */
         }
       } else {
-        setError('Falha ao carregar. Verifique sua conexao.')
+        setError('Falha ao carregar. Verifique sua conexão.')
       }
       setAuthed(false)
       setGifts(null)
@@ -123,7 +123,7 @@ export default function Admin() {
   }
 
   async function deleteRsvp(rsvpId: string) {
-    if (!confirm('Excluir esta confirmacao de presenca?')) return
+    if (!confirm('Excluir esta confirmação de presença?')) return
     try {
       await api.admin.deleteRsvp(token, rsvpId)
       await reload()
@@ -197,7 +197,7 @@ export default function Admin() {
         <TabBtn
           active={tab === 'rsvp'}
           onClick={() => setTab('rsvp')}
-          label={`Presencas (${rsvps?.length ?? 0})`}
+          label={`Presenças (${rsvps?.length ?? 0})`}
         />
       </div>
 
@@ -313,7 +313,7 @@ function GiftsTab({
             Presentes compartilhados ({multiClaimRows.length})
           </h2>
           <p className="text-xs text-[var(--color-muted)] mb-4">
-            Estes presentes podem ser dados por varios convidados. A lista abaixo
+            Estes presentes podem ser dados por vários convidados. A lista abaixo
             registra quem clicou em confirmar e foi redirecionado para a loja.
           </p>
           <table className="w-full text-sm mb-12 border-collapse">
@@ -339,7 +339,7 @@ function GiftsTab({
               {multiClaimRows.length === 0 && (
                 <tr>
                   <td colSpan={3} className="py-6 text-[var(--color-muted)] text-center">
-                    Nenhuma confirmacao ainda.
+                    Nenhuma confirmação ainda.
                   </td>
                 </tr>
               )}
@@ -348,7 +348,7 @@ function GiftsTab({
         </>
       )}
 
-      <h2 className="text-xl font-serif mb-4">Disponiveis ({available.length + multiClaim.length})</h2>
+      <h2 className="text-xl font-serif mb-4">Disponíveis ({available.length + multiClaim.length})</h2>
       <ul className="grid gap-2 sm:grid-cols-2">
         {[...available, ...multiClaim].map((g) => (
           <li
@@ -356,7 +356,11 @@ function GiftsTab({
             className="text-sm py-1 border-b border-[var(--color-sand)]"
           >
             {g.name}
-            {g.multiClaim ? ' (varios convidados)' : ''}
+            {g.multiClaim
+              ? g.maxClaims != null
+                ? ` (${g.claims?.length ?? 0}/${g.maxClaims} unidades)`
+                : ' (vários convidados)'
+              : ''}
           </li>
         ))}
       </ul>
@@ -388,14 +392,14 @@ function HoneymoonTab({
           value={`R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
         />
         <Stat
-          label="Aguardando confirmacao"
+          label="Aguardando confirmação"
           value={`R$ ${pendingTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
         />
       </div>
 
       <p className="text-xs text-[var(--color-muted)] mb-6">
         Confira cada txid no extrato Pix do banco e marque como confirmado.
-        O txid aparece na referencia da transacao em quase todos os bancos.
+        O txid aparece na referência da transação em quase todos os bancos.
       </p>
 
       <table className="w-full text-sm border-collapse">
@@ -447,7 +451,7 @@ function HoneymoonTab({
           {claims.length === 0 && (
             <tr>
               <td colSpan={7} className="py-6 text-[var(--color-muted)] text-center">
-                Nenhuma contribuicao ainda.
+                Nenhuma contribuição ainda.
               </td>
             </tr>
           )}
@@ -473,7 +477,7 @@ function RsvpTab({
       <div className="grid grid-cols-3 gap-4 mb-8">
         <Stat label="Confirmados" value={String(going.length)} />
         <Stat label="Total de pessoas" value={String(totalPeople)} />
-        <Stat label="Nao vao" value={String(notGoing.length)} />
+        <Stat label="Não vão" value={String(notGoing.length)} />
       </div>
 
       <table className="w-full text-sm border-collapse">
@@ -499,7 +503,7 @@ function RsvpTab({
                       : 'border border-[var(--color-sand)] text-[var(--color-muted)]'
                   }`}
                 >
-                  {r.attending ? 'Sim' : 'Nao'}
+                  {r.attending ? 'Sim' : 'Não'}
                 </span>
               </td>
               <td>{r.attending ? r.companions : '-'}</td>
@@ -520,7 +524,7 @@ function RsvpTab({
           {rsvps.length === 0 && (
             <tr>
               <td colSpan={6} className="py-6 text-[var(--color-muted)] text-center">
-                Nenhuma confirmacao ainda.
+                Nenhuma confirmação ainda.
               </td>
             </tr>
           )}
